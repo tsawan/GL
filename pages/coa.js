@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Formik } from 'formik';
 import { Divider } from "@chakra-ui/core";
+import { AgGridReact } from 'ag-grid-react';
+
 import {
   Box,
   Flex,
@@ -10,6 +12,17 @@ import {
 
 const coa = () => {
   //defining layouts
+  const gridState = {
+    columnDefs: [
+      { headerName: "Make", field: "make" },
+      { headerName: "Model", field: "model" },
+      { headerName: "Price", field: "price" }],
+    rowData: [
+      { make: "Toyota", model: "Celica", price: 35000 },
+      { make: "Ford", model: "Mondeo", price: 32000 },
+      { make: "Porsche", model: "Boxter", price: 72000 }]
+  }
+
   const flexSettings = {
     flex: "1",
     minW: "300px",
@@ -31,9 +44,14 @@ const coa = () => {
 
     <Flex>{/*for settng up divider for the form*/}
 
-      <Box {...flexSettings} >
-        <span>Tree/Grid Component</span>
-      </Box>
+      {/* <Box {...flexSettings} > */}
+      <div className="ag-theme-blue" style={ {height: '200px', width: '500px'} }>
+        <AgGridReact
+            columnDefs={gridState.columnDefs}
+            rowData={gridState.rowData}>
+        </AgGridReact>
+        </div>        
+      {/* </Box> */}
 
       <Divider orientation="vertical" />
 
