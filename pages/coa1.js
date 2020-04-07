@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Formik } from 'formik';
 import { Divider } from "@chakra-ui/core";
-import { AgGridReact } from 'ag-grid-react';
 
 import {
   Box,
@@ -9,19 +8,13 @@ import {
   Grid,
 } from "@chakra-ui/core";
 
+import { Tree } from 'antd';
+
+const { TreeNode } = Tree;
 
 const coa = () => {
   //defining layouts
-  const gridState = {
-    columnDefs: [
-      { headerName: "Make", field: "make" },
-      { headerName: "Model", field: "model" },
-      { headerName: "Price", field: "price" }],
-    rowData: [
-      { make: "Toyota", model: "Celica", price: 35000 },
-      { make: "Ford", model: "Mondeo", price: 32000 },
-      { make: "Porsche", model: "Boxter", price: 72000 }]
-  }
+
 
   const flexSettings = {
     flex: "1",
@@ -40,17 +33,65 @@ const coa = () => {
 
   const [count, setCount] = useState(5);
 
-  return <div>
+  const treeData = [
+    {
+      title: '11 - Assets - Net',
+      key: '11',
+      children: [
+        {
+          title: '1101 - Fixed Assets',
+          key: '1101',
+          children: [
+            {
+              title: '110101 - Fixed Assets at Cost',
+              key: '110101',
+              disableCheckbox: true,
+              children: [
+                  {
+                      title: '110101001 - Land free hold',
+                      key: '110101001',
+                      isLeaf: true
+                  },
+                  {
+                      title: '110101002 - Plant and Machinery',
+                      key: '110101002',
+                      isLeaf: true
+                  }
+              ]
+            },
+            {
+              title: '1102 - Capital work in Progress',
+              key: '1102',
+              isLeaf: true
+            },
+          ],
+        },
+        {
+          title: '1104 - Current Assets',
+          key: '1104',
+        },
+      ],
+    },
+  ];
+
+  const onSelect = () => {};
+
+return <div>
 
     <Flex>{/*for settng up divider for the form*/}
 
       {/* <Box {...flexSettings} > */}
-      <div className="ag-theme-blue" style={ {height: '200px', width: '500px'} }>
-        <AgGridReact
-            columnDefs={gridState.columnDefs}
-            rowData={gridState.rowData}>
-        </AgGridReact>
-        </div>        
+      <div style={ {height: '200px', width: '500px'} }>
+      <Tree
+        defaultExpandAll={true}
+        draggable={true}
+        selectable={true}
+        showLine={true}
+        showIcon={false}
+        onSelect={onSelect}
+        treeData={treeData}
+      />
+      </div>
       {/* </Box> */}
 
       <Divider orientation="vertical" />
@@ -87,7 +128,8 @@ const coa = () => {
             touched,
             handleChange,
             handleBlur,
-            handleSubmit,            isSubmitting,
+            handleSubmit,
+            isSubmitting,
             /* and other goodies */
           }) => (
               <form onSubmit={handleSubmit}>
