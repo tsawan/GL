@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Formik, Field, RadioButton } from 'formik'
 import { Divider } from '@chakra-ui/core'
-import Autocomplete from './shared/components/Autocomplete'
-import { DisplayFormikState } from './shared/components/helper'
+import Autocomplete from '../components/Autocomplete'
+import { DisplayFormikState } from '../components/helper'
 import { Box, Flex, Grid } from '@chakra-ui/core'
 
 import { Tree } from 'antd'
@@ -33,40 +33,6 @@ const coa = () => {
     {
       title: '11 - Assets - Net',
       key: '11',
-      children: [
-        {
-          title: '1101 - Fixed Assets',
-          key: '1101',
-          children: [
-            {
-              title: '110101 - Fixed Assets at Cost',
-              key: '110101',
-              disableCheckbox: true,
-              children: [
-                {
-                  title: '110101001 - Land free hold',
-                  key: '110101001',
-                  isLeaf: true,
-                },
-                {
-                  title: '110101002 - Plant and Machinery',
-                  key: '110101002',
-                  isLeaf: true,
-                },
-              ],
-            },
-            {
-              title: '1102 - Capital work in Progress',
-              key: '1102',
-              isLeaf: true,
-            },
-          ],
-        },
-        {
-          title: '1104 - Current Assets',
-          key: '1104',
-        },
-      ],
     },
   ]
   const onSelect = () => {}
