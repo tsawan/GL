@@ -1,16 +1,11 @@
-import { useState } from 'react'
-import { Formik, Field, RadioButton } from 'formik'
+import { Formik } from 'formik'
 import { Divider } from '@chakra-ui/core'
 import Autocomplete from '../components/Autocomplete'
 import { DisplayFormikState } from '../components/helper'
 import { Box, Flex, Grid } from '@chakra-ui/core'
+import AccountsTree from "../components/AccountsTree";
 
-import { Tree } from 'antd'
-import { PropertyKeys } from 'ag-grid-community'
-
-const { TreeNode } = Tree
-
-const coa = () => {
+const coa1 = () => {
   const [values, setValues] = React.useState({})
 
   const flexSettings = {
@@ -59,16 +54,10 @@ const coa = () => {
           ]}
         />
         {/* <Box {...flexSettings} > */}
-        <div style={{ height: '200px', width: '500px' }}>
-          <Tree
-            defaultExpandAll={true}
-            draggable={true}
-            selectable={true}
-            showLine={true}
-            showIcon={false}
-            onSelect={onSelect}
-            treeData={treeData}
-          />
+        <div
+          style={{ height: "80vh", "overflow-y": "scroll", border: "1px solid blue" }}>
+          <h1>Chart of Accounts </h1>
+          <AccountsTree />
         </div>
         {/* </Box> */}
 
@@ -230,4 +219,4 @@ const coa = () => {
     </div>
   )
 }
-export default coa
+export default coa1
