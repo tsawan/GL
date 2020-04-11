@@ -87,8 +87,7 @@ const coa = () => {
             touched,
             handleChange,
             handleBlur,
-            handleSubmit,
-            isSubmitting,
+            handleSubmit,            isSubmitting,
             /* and other goodies */
           }) => (
               <form onSubmit={handleSubmit}>
