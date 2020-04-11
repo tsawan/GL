@@ -254,6 +254,7 @@ const coa = () => {
                     </label>
                   </Box>
                 </Box>
+                <DisplayFormikState {...props} />
               </form>
             )}
          
