@@ -5,7 +5,7 @@ import React from 'react';
 import App from 'next/app';
 import { ApolloProvider } from '@apollo/react-hooks';
 
-import withData from '../config';
+import withApollo from '../lib/apollo-client';
 
 class MyApp extends App {
   render() {
@@ -19,4 +19,4 @@ class MyApp extends App {
 }
 
 // Wraps all components in the tree with the data provider
-export default withData(MyApp);
+export default withApollo(MyApp);
