@@ -1,8 +1,7 @@
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
-import withData from "../config";
 import { useState } from "react";
 import { Tree } from "antd";
+import { useQuery } from '@apollo/react-hooks';
 
 const query = gql`{
   coa:grpglcodesl2 {
@@ -43,32 +42,28 @@ const AccountsTree = () => {
       setInit(true);
     }, 100);
   };
-  return (
-    <Query query={query} fetchPolicy={"cache-and-network"}>
-      {({ loading, data, error }) => {
-        if (loading) {
-          return <div>Loading data...</div>;
-        }
-        if (error) {
-          return <div>Error..</div>;
-        }
-        if (data) {
-          if (!init) formatData(data.coa);
-          return (
-              <Tree
-                defaultExpandAll={false}
-                draggable={true}
-                selectable={true}
-                showLine={true}
-                showIcon={false}
-                onSelect={onSelect}
-                treeData={treeData}
-              />
-          );
-        }
-      }}
-    </Query>
-  );
+
+  const { loading, data, error } = useQuery(query);
+  if (loading || !data) {
+    return <div>Loading data...</div>;
+  }
+  if (error) {
+    return <div>Error..</div>;
+  }
+  if (data) {
+    if (!init) formatData(data.coa);
+    return (
+        <Tree
+          defaultExpandAll={false}
+          draggable={true}
+          selectable={true}
+          showLine={true}
+          showIcon={false}
+          onSelect={onSelect}
+          treeData={treeData}
+        />
+    );
+  }
 };
 
-export default withData(AccountsTree);
+export default AccountsTree;
