@@ -8,6 +8,7 @@ import {
   Flex,
   Grid,
 } from "@chakra-ui/core";
+import SliderLayout from "../components/SliderPageLayout";
 
 
 const coa = () => {
@@ -38,9 +39,10 @@ const coa = () => {
     color: "black",
   };
 
-  const [count, setCount] = useState(5);
+  //const [count, setCount] = useState(5);
 
-  return <div>
+  return (
+  <SliderLayout>
 
     <Flex>{/*for settng up divider for the form*/}
 
@@ -141,7 +143,8 @@ const coa = () => {
 
     </Flex>
 
-  </div>;
-};
+  </SliderLayout>)
+
+}
 export default coa;
 
