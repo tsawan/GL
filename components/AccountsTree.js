@@ -1,25 +1,26 @@
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
-import withData from "../config";
 import { useState } from "react";
 import { Tree } from "antd";
+import { useQuery } from '@apollo/react-hooks';
 
+// check why (query getAccounts) is not working while it's required
+// for mutations
 const query = gql`{
-  coa:grpglcodesl2 {
-    key: grpglcodel2
-    title
-    children: grpglcodesl2_grpglcodes {
-      key: grpglcode
+    coa:grpglcodesl2 {
+      key: grpglcodel2
       title
-      children: grpglcodes_subgrpglcodes {
-        key: subgrpglcode
+      children: grpglcodes {
+        key: grpglcode
         title
-        children: subgrpglcodes_glcodes {
-          key: glcode
+        children: subgrpglcodes {
+          key:subgrpglcode
           title
+          children: glcodes {
+            key:glcode
+            title
+          }
         }
       }
-    }
   }
 }`;
 
@@ -43,32 +44,28 @@ const AccountsTree = () => {
       setInit(true);
     }, 100);
   };
-  return (
-    <Query query={query} fetchPolicy={"cache-and-network"}>
-      {({ loading, data, error }) => {
-        if (loading) {
-          return <div>Loading data...</div>;
-        }
-        if (error) {
-          return <div>Error..</div>;
-        }
-        if (data) {
-          if (!init) formatData(data.coa);
-          return (
-              <Tree
-                defaultExpandAll={false}
-                draggable={true}
-                selectable={true}
-                showLine={true}
-                showIcon={false}
-                onSelect={onSelect}
-                treeData={treeData}
-              />
-          );
-        }
-      }}
-    </Query>
-  );
+
+  const { loading, data, error } = useQuery(query);
+  if (loading || !data) {
+    return <div>Loading data...</div>;
+  }
+  if (error) {
+    return <div>Error..</div>;
+  }
+  if (data) {
+    if (!init) formatData(data.coa);
+    return (
+        <Tree
+          defaultExpandAll={false}
+          draggable={true}
+          selectable={true}
+          showLine={true}
+          showIcon={false}
+          onSelect={onSelect}
+          treeData={treeData}
+        />
+    );
+  }
 };
 
-export default withData(AccountsTree);
+export default AccountsTree;
