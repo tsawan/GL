@@ -1,10 +1,10 @@
-import { Formik } from 'formik'
+import { Formik} from 'formik'
 import { Divider } from '@chakra-ui/core'
 import Autocomplete from '../components/Autocomplete'
 import { DisplayFormikState } from '../components/helper'
 import { Box, Flex, Grid } from '@chakra-ui/core'
 import AccountsTree from "../components/AccountsTree";
-import AddAccount from '../components/AddAccount'
+import { PropertyKeys } from 'ag-grid-community'
 
 const coa1 = () => {
   const [values, setValues] = React.useState({})
@@ -56,16 +56,10 @@ const coa1 = () => {
         />
         {/* <Box {...flexSettings} > */}
         <div
-          style={{ height: "70vh", "overflow-y": "scroll", border: "1px solid blue" }}>
+          style={{ height: "80vh", "overflow-y": "scroll", border: "1px solid blue" }}>
           <h1>Chart of Accounts </h1>
-          {/* <AccountsTree /> */}
+          <AccountsTree />
         </div>
-        <div
-          style={{ height: "30vh", border: "1px solid red" }}>
-          
-          <AddAccount />
-        </div>
-
         {/* </Box> */}
 
         <Divider orientation="vertical" />

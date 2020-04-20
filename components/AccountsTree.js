@@ -3,22 +3,24 @@ import { useState } from "react";
 import { Tree } from "antd";
 import { useQuery } from '@apollo/react-hooks';
 
+// check why (query getAccounts) is not working while it's required
+// for mutations
 const query = gql`{
-  coa:grpglcodesl2 {
-    key: grpglcodel2
-    title
-    children: grpglcodesl2_grpglcodes {
-      key: grpglcode
+    coa:grpglcodesl2 {
+      key: grpglcodel2
       title
-      children: grpglcodes_subgrpglcodes {
-        key: subgrpglcode
+      children: grpglcodes {
+        key: grpglcode
         title
-        children: subgrpglcodes_glcodes {
-          key: glcode
+        children: subgrpglcodes {
+          key:subgrpglcode
           title
+          children: glcodes {
+            key:glcode
+            title
+          }
         }
       }
-    }
   }
 }`;
 
