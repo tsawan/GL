@@ -48,7 +48,7 @@ const coa1 = () => {
           <div
             style={{
               height: '80vh',
-              'overflow-y': 'scroll',
+              'overflowY': 'scroll',
               border: '1px solid blue',
               minWidth: '300px',
             }}
