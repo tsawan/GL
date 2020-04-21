@@ -3,8 +3,6 @@ import { useState } from "react";
 import { Tree, Input } from "antd";
 import { useQuery } from '@apollo/react-hooks';
 
-const MIN_SEARCH_LENGTH = 3;
-
 const { Search } = Input;
 
 // check why (query getAccounts) is not working while it's required
@@ -83,15 +81,12 @@ const AccountsTree = () => {
     setAutoExpandParent(false);
   };
 
-  const onChange = e => {
-    const { value } = e.target;
-    //if (value.length < MIN_SEARCH_LENGTH) return;
+  const onSearch = value => {
 
     const _expandedKeys = dataList
       .map(item => {
         if (item.title.toUpperCase().indexOf(value.toUpperCase()) > -1) {
-          const pk = getParentKey(item.key, treeData);
-          return pk;
+          return getParentKey(item.key, treeData);
         }
         return null;
       })
@@ -101,7 +96,6 @@ const AccountsTree = () => {
     setExpandedKeys(_expandedKeys);
     setAutoExpandParent(true);
   };
-
   const loop = data =>
     data.map(item => {
       const searchLength = searchValue.length;
@@ -128,7 +122,6 @@ const AccountsTree = () => {
         key: item.key,
       };
     });
-
   const formatData = data => {
     let tree = [
       {
@@ -158,8 +151,8 @@ const AccountsTree = () => {
     if (!init) formatData(data.coa);
     return (
       <div>
-        <Search style={{ marginBottom: 8 }} placeholder="Search" 
-          onChange={onChange} />
+        <Search style={{ marginBottom: 8 }} placeholder="Search" enterButton={true}
+          onSearch={onSearch} />
 
         <Tree
           defaultExpandAll={false}

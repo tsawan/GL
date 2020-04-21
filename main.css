@@ -1,6 +1,6 @@
 .site-tree-search-value {
-  color: #f50;
+  color: green;
 }
 [data-theme='dark'] .site-tree-search-value {
-  color: #d84a1b;
+  color: green;
 }
