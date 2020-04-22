@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Button, Tooltip } from 'antd'
-import Autocomplete from './Autocomplete'
+// import Autocomplete from './Autocomplete'
 
 import { SearchOutlined} from '@ant-design/icons'
 
@@ -33,7 +33,7 @@ export function SearchToolBar() {
         Search
       </Button>
       {/*for settng up divider for the form*/}
-      <Autocomplete
+      {/* <Autocomplete
         suggestions={[
           'Mills building',
           'Colony',
@@ -49,7 +49,7 @@ export function SearchToolBar() {
           'Sanitary fittings (plant & machinery)',
           'Maintenance & salary exp',
         ]}
-      />
+      /> */}
     </div>
   )
 }
