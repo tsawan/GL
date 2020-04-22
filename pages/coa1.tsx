@@ -5,17 +5,18 @@ import { DisplayFormikState } from '../components/helper'
 import { Box, Flex, Grid } from '@chakra-ui/core'
 import AccountsTree from "../components/AccountsTree";
 import { PropertyKeys } from 'ag-grid-community'
+import { useState } from 'react';
 
 import SliderLayout from '../components/SliderPageLayout'
 import { SearchToolBar, CRUDToolBar, BasicToolBar } from '../components/Toolbar'
 import { PageHeader } from 'antd'
 const coa1 = () => {
-  const [values, setValues] = React.useState({})
+  const [values, setValues] = useState({})
 
   const flexSettings = {
     flex: '1',
     minW: '300px',
-    textAlign: 'center',
+    //textAlign: 'center',
     color: 'black',
     mx: '6',
     mb: '6',
@@ -71,14 +72,14 @@ const coa1 = () => {
                 subGroupDesc: 'Local debitors',
                 ledgerType: 'Sales',
               }}
-              handleChange={(values, { event }) => {
-                console.log(values)
-              }}
+              //handleChange={(values, { event }) => {
+              //  console.log(values)
+              //</Box>/}}
               validate={(values) => {
                 const errors = {}
-                if (!values.mainGrpCode) {
-                  errors.mainGrpCode = 'Required'
-                }
+                //if (!values.mainGrpCode) {
+                //  errors.mainGrpCode = 'Required'
+                //}
                 return errors
               }}
               onSubmit={(values, { setSubmitting }) => {
@@ -111,7 +112,7 @@ const coa1 = () => {
                       <input
                         type="text"
                         name="glGroup"
-                        value={values.glGroup}
+                        value={props.values.glGroup}
                       />
                       <input
                         type="text"

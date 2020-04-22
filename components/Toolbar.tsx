@@ -10,7 +10,7 @@ const linkStyle = {
 
 export function CRUDToolBar() {
   return (
-    <div align="left">
+    <div>
       <Button type="primary">Add</Button>
       <Button type="primary">Modify</Button>
       <Button type="primary">Delete</Button>
@@ -19,7 +19,7 @@ export function CRUDToolBar() {
 }
 export function BasicToolBar() {
   return (
-    <div align="right">
+    <div>
       <Button type="primary">OK</Button>
       <Button type="primary">Cancel</Button>
     </div>
@@ -28,7 +28,7 @@ export function BasicToolBar() {
 
 export function SearchToolBar() {
   return (
-    <div align="left">
+    <div>
       <Button type="primary" icon={<SearchOutlined />}>
         Search
       </Button>

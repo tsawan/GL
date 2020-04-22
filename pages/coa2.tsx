@@ -6,25 +6,11 @@ import { Divider } from '@chakra-ui/core'
 import { Box, Flex, Grid } from '@chakra-ui/core'
 import { useMutation, useLazyQuery } from '@apollo/react-hooks';
 import { addGlCode, addSubGrpGlCode, getSubGroupsByGroupCode } from '../queries/accounts'
+import { useState} from 'react';
 
 const coa2 = () => {
-  const [values, setValues] = React.useState({})
+  const [values, setValues] = useState({})
 
-  const flexSettings = {
-    flex: '1',
-    minW: '300px',
-    textAlign: 'center',
-    color: 'black',
-    mx: '6',
-    mb: '6',
-  }
-
-  const gridSettings = {
-    w: '100%',
-    textAlign: 'center',
-    color: 'black',
-  }
-  
   return (
     <div>
       <Flex>
@@ -97,7 +83,7 @@ const AddGlCode = () => {
               enteredby: "tsawan",
               enteredon: "2020-04-18"
             } } });
-            console.log('res ', result);
+            //console.log('res ', result);
         }}
       >
         <label>GL Code</label>
@@ -127,8 +113,8 @@ const AddSubGrpGlCode = () => {
   
     // need to change the form to use formik
     if (data) { 
-        const nested = Object.values(temp1)[0]
-        console.warn('got data ', nested)
+        //const nested = Object.values(temp1)[0]
+        console.warn('got data ', data)
     }
 
     return (
