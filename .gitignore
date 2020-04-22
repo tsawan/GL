@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+functions/nextRouter
+public/_next
+public/_redirects
