@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev --port 3010",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "postbuild": "next-on-netlify"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.4",
@@ -17,17 +18,23 @@
     "ag-grid-react": "^23.0.2",
     "antd": "^4.1.1",
     "apollo-boost": "^0.4.7",
+    "apollo-cache-inmemory": "^1.6.5",
     "emotion-theming": "^10.0.27",
     "formik": "^2.1.4",
     "graphql": "^15.0.0",
+    "isomorphic-unfetch": "^3.0.0",
     "next": "9.3.3",
-    "next-apollo": "^3.1.10",
+    "next-on-netlify": "^1.1.0",
+    "next-with-apollo": "^5.0.1",
     "react": "16.13.1",
     "react-apollo": "^3.1.4",
     "react-dom": "16.13.1",
     "yup": "^0.28.3"
   },
   "devDependencies": {
-    "prettier": "2.0.2"
+    "@types/node": "^13.13.2",
+    "@types/react": "^16.9.34",
+    "prettier": "2.0.2",
+    "typescript": "^3.8.3"
   }
 }

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Button, Tooltip } from 'antd'
-import Autocomplete from './Autocomplete'
+// import Autocomplete from './Autocomplete'
 
 import { SearchOutlined} from '@ant-design/icons'
 
@@ -10,7 +10,7 @@ const linkStyle = {
 
 export function CRUDToolBar() {
   return (
-    <div align="left">
+    <div>
       <Button type="primary">Add</Button>
       <Button type="primary">Modify</Button>
       <Button type="primary">Delete</Button>
@@ -19,7 +19,7 @@ export function CRUDToolBar() {
 }
 export function BasicToolBar() {
   return (
-    <div align="right">
+    <div>
       <Button type="primary">OK</Button>
       <Button type="primary">Cancel</Button>
     </div>
@@ -28,12 +28,12 @@ export function BasicToolBar() {
 
 export function SearchToolBar() {
   return (
-    <div align="left">
+    <div>
       <Button type="primary" icon={<SearchOutlined />}>
         Search
       </Button>
       {/*for settng up divider for the form*/}
-      <Autocomplete
+      {/* <Autocomplete
         suggestions={[
           'Mills building',
           'Colony',
@@ -49,7 +49,7 @@ export function SearchToolBar() {
           'Sanitary fittings (plant & machinery)',
           'Maintenance & salary exp',
         ]}
-      />
+      /> */}
     </div>
   )
 }
