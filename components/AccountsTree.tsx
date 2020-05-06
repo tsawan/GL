@@ -5,6 +5,9 @@ import { useQuery } from '@apollo/react-hooks'
 
 const { Search } = Input
 
+// todo: move out
+const MAX_LEVEL: number = 4
+
 // check why (query getAccounts) is not working while it's required
 // for mutations
 const query_test = gql`
@@ -77,22 +80,36 @@ const AccountsTree = () => {
   }
 
   const onSelect = (selectedKeys, info) => {
-    console.log(info.node)
+    let level: number = 1
     const title = dataList
       .filter((item) => item.key === info.node.key)
       .map((node) => node.title)
+    const result = []
     let current: any = { key: info.node.key, title: title[0] }
     let selected = current
-    debugger
+    result.push(current)
     while (current) {
       let _parent = getParent(current.key, treeData)
-      if (_parent) {
-        console.log(`key: ${_parent.key}, title: ${_parent.title}`)
-        current.parent = _parent
+      if (_parent && _parent.key !== '0') {
+        //console.log(`key: ${_parent.key}, title: ${_parent.title}`)
+        result.push(_parent)
+        level++
       }
       current = _parent
     }
-    console.log('==> ', selected)
+    if (level === MAX_LEVEL) {
+      let account = result[0]
+      // fetch account details
+      //  use some dummy props for now
+      const details = { type: 'seller', address: 'dhahran' }
+      result[0] = { ...account, ...details }
+    }
+    // reverse the array
+    const data = []
+    for (let j = result.length - 1, i = 0; j >= 0; ) {
+      data[i++] = result[j--]
+    }
+    console.log('==> ', data)
   }
 
   const onExpand = (_expandedKeys) => {
@@ -143,7 +160,7 @@ const AccountsTree = () => {
   const formatData = (data) => {
     let tree = [
       {
-        key: '000000',
+        key: '0',
         title: 'Chart of Account',
         children: data,
       },
