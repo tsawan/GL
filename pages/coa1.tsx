@@ -1,11 +1,11 @@
-import { Formik} from 'formik'
+import { Formik } from 'formik'
 import { Divider } from '@chakra-ui/core'
 
 import { DisplayFormikState } from '../components/helper'
 import { Box, Flex, Grid } from '@chakra-ui/core'
-import AccountsTree from "../components/AccountsTree";
+import AccountsTree from '../components/AccountsTree'
 import { PropertyKeys } from 'ag-grid-community'
-import { useState } from 'react';
+import { useState } from 'react'
 
 import SliderLayout from '../components/SliderPageLayout'
 import { SearchToolBar, CRUDToolBar, BasicToolBar } from '../components/Toolbar'
@@ -34,7 +34,10 @@ const coa1 = () => {
       key: '11',
     },
   ]
-  const onSelect = () => {}
+  const onTreeSelect = (selection) => {
+    console.log(`level ${selection.length}`)
+    console.log('selection ', selection)
+  }
 
   return (
     <SliderLayout>
@@ -49,12 +52,12 @@ const coa1 = () => {
           <div
             style={{
               height: '80vh',
-              'overflowY': 'scroll',
+              overflowY: 'scroll',
               border: '1px solid blue',
               minWidth: '300px',
             }}
           >
-            <AccountsTree />
+            <AccountsTree onTreeSelect={onTreeSelect} />
           </div>
           {/* </Box> */}
 

@@ -59,7 +59,7 @@ const getParent = (key, tree) => {
   return parent
 }
 
-const AccountsTree = () => {
+const AccountsTree = ({ onTreeSelect }) => {
   const [treeData, setTreeData] = useState([])
   const [init, setInit] = useState(false)
   const [searchValue, setSearchValue] = useState('')
@@ -109,7 +109,7 @@ const AccountsTree = () => {
     for (let j = result.length - 1, i = 0; j >= 0; ) {
       data[i++] = result[j--]
     }
-    console.log('==> ', data)
+    onTreeSelect(data)
   }
 
   const onExpand = (_expandedKeys) => {
