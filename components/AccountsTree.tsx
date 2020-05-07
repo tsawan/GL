@@ -79,18 +79,24 @@ const AccountsTree = ({ onTreeSelect }) => {
     }
   }
 
+  const stripCode = (title: string) => {
+    let split = title.split(' - ')
+    return split.length === 2 ? split[1] : title
+  }
+
   const onSelect = (selectedKeys, info) => {
     let level: number = 1
     const title = dataList
       .filter((item) => item.key === info.node.key)
       .map((node) => node.title)
     const result = []
-    let current: any = { key: info.node.key, title: title[0] }
+    let current: any = { key: info.node.key, title: stripCode(title[0]) }
     let selected = current
     result.push(current)
     while (current) {
       let _parent = getParent(current.key, treeData)
       if (_parent && _parent.key !== '0') {
+        _parent.title = stripCode(_parent.title)
         //console.log(`key: ${_parent.key}, title: ${_parent.title}`)
         result.push(_parent)
         level++

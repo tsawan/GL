@@ -10,8 +10,18 @@ import { useState } from 'react'
 import SliderLayout from '../components/SliderPageLayout'
 import { SearchToolBar, CRUDToolBar, BasicToolBar } from '../components/Toolbar'
 import { PageHeader } from 'antd'
+
 const coa1 = () => {
-  const [values, setValues] = useState({})
+  const [values, setValues] = useState({
+    mainGrpCode: '01',
+    mainGroupDesc: 'Property and AssetsXX',
+    glGroup: '0108',
+    glGroupDesc: 'Trade debitors',
+    subGroupCode: '010802',
+    subGroupDesc: 'Local debitors',
+    glCode: '010802001',
+    glHead: 'Trade debitors',
+  })
 
   const flexSettings = {
     flex: '1',
@@ -22,21 +32,34 @@ const coa1 = () => {
     mb: '6',
   }
 
-  const gridSettings = {
-    w: '100%',
-    textAlign: 'center',
-    color: 'black',
-  }
-
-  const treeData = [
-    {
-      title: '11 - Assets - Net',
-      key: '11',
-    },
-  ]
   const onTreeSelect = (selection) => {
+    const level = selection.length
     console.log(`level ${selection.length}`)
     console.log('selection ', selection)
+    // todo: improve later
+    let updated: any = {
+      mainGrpCode: selection[0].key,
+      mainGroupDesc: selection[0].title,
+      glGroup: '',
+      glGroupDesc: '',
+      subGroupCode: '',
+      subGroupDesc: '',
+      glCode: '',
+      glHead: '',
+    }
+    if (level > 1) {
+      updated.glGroup = selection[1].key
+      updated.glGroupDesc = selection[1].title
+    }
+    if (level > 2) {
+      updated.subGroupCode = selection[2].key
+      updated.subGroupDesc = selection[2].title
+    }
+    if (level > 3) {
+      updated.glCode = selection[3].key
+      updated.glHead = selection[3].title
+    }
+    setValues(updated)
   }
 
   return (
@@ -66,13 +89,16 @@ const coa1 = () => {
           <Box {...flexSettings}>
             {/* enclosing the top form defining the basic codes*/}
             <Formik
+              enableReinitialize
               initialValues={{
-                mainGrpCode: '01',
-                mainGroupDesc: 'Property and Assets',
-                glGroup: '0108',
-                glGroupDesc: 'Trade debitors',
-                subGroupCode: '010802',
-                subGroupDesc: 'Local debitors',
+                mainGrpCode: values.mainGrpCode,
+                mainGroupDesc: values.mainGroupDesc,
+                glGroup: values.glGroup,
+                glGroupDesc: values.glGroupDesc,
+                subGroupCode: values.subGroupCode,
+                subGroupDesc: values.subGroupDesc,
+                glCode: values.glCode,
+                glHead: values.glHead,
                 ledgerType: 'Sales',
               }}
               //handleChange={(values, { event }) => {
@@ -139,11 +165,11 @@ const coa1 = () => {
                     {/* Lower section defining the G/L codes*/}
                     <label>
                       G/L Code
-                      <input name="glCode" value="010802001" />
+                      <input name="glCode" value={props.values.glCode} />
                     </label>
                     <label>
                       G/L Head
-                      <input id="glHead" value="Local debitors" />
+                      <input id="glHead" value={props.values.glHead} />
                     </label>
                     #{/* Configuration */}
                     <Box borderWidth="1px" rounded="lg">
