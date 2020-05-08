@@ -11,17 +11,17 @@ const linkStyle = {
 export function CRUDToolBar() {
   return (
     <div>
-      <Button type="primary">Add</Button>
-      <Button type="primary">Modify</Button>
-      <Button type="primary">Delete</Button>
+      <Button type="primary" htmlType="submit">Add</Button>
+      <Button type="default" htmlType="submit">Modify</Button>
+      <Button type="danger"  htmlType="submit">Delete</Button>
     </div>
   )
 }
 export function BasicToolBar() {
   return (
     <div>
-      <Button type="primary">OK</Button>
-      <Button type="primary">Cancel</Button>
+      <Button type="default" htmlType="button">OK</Button>
+      <Button type="primary" htmlType="reset">Cancel</Button>
     </div>
   )
 }

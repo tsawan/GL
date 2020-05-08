@@ -2,8 +2,10 @@ import gql from "graphql-tag";
 import { useState } from "react";
 import { Tree, Input } from "antd";
 import { useQuery } from '@apollo/react-hooks';
-
+import { AccountHead } from "../domain/AccountHead";
 const { Search } = Input;
+
+
 
 // check why (query getAccounts) is not working while it's required
 // for mutations
@@ -62,7 +64,8 @@ const AccountsTree = () => {
   const [searchValue, setSearchValue] = useState('');
   const [expandedKeys, setExpandedKeys] = useState([]);
   const [autoExpandParent, setAutoExpandParent] = useState(false);
-  const [dataList, setDataList] = useState([])
+  const [dataList, setDataList] = useState([]);
+
 
   const _list = [];
   const generateList = data => {
