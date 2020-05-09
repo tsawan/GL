@@ -1,17 +1,20 @@
 import { Formik } from 'formik'
 import { Divider } from '@chakra-ui/core'
-
 import { DisplayFormikState } from '../components/helper'
 import { Box, Flex, Grid } from '@chakra-ui/core'
 import AccountsTree from '../components/AccountsTree'
-import { PropertyKeys } from 'ag-grid-community'
+
 import { useState } from 'react'
 
 import SliderLayout from '../components/SliderPageLayout'
-import { SearchToolBar, CRUDToolBar, BasicToolBar } from '../components/Toolbar'
+import { SearchToolBar, BasicToolBar, CRUDToolBar } from '../components/Toolbar'
 import { PageHeader } from 'antd'
+import { useMutation, useLazyQuery } from '@apollo/react-hooks';
+import { addGlCode, addSubGrpGlCode, getSubGroupsByGroupCode } from '../queries/accounts'
+
 
 const coa1 = () => {
+  const [addNewAccount, { data }] = useMutation(addGlCode);
   const [values, setValues] = useState({
     mainGrpCode: '01',
     mainGroupDesc: 'Property and AssetsXX',
@@ -21,6 +24,7 @@ const coa1 = () => {
     subGroupDesc: 'Local debitors',
     glCode: '010802001',
     glHead: 'Trade debitors',
+    submitAction: undefined,
   })
 
   const flexSettings = {
@@ -100,6 +104,7 @@ const coa1 = () => {
                 glCode: values.glCode,
                 glHead: values.glHead,
                 ledgerType: 'Sales',
+                submitAction: undefined
               }}
               //handleChange={(values, { event }) => {
               //  console.log(values)
@@ -107,16 +112,36 @@ const coa1 = () => {
               validate={(values) => {
                 const errors = {}
                 //if (!values.mainGrpCode) {
-                //  errors.mainGrpCode = 'Required'
+                  //errors.mainGrpCode = 'Required'
                 //}
                 return errors
               }}
               onSubmit={(values, { setSubmitting }) => {
+                
                 setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2))
+                  if (values.submitAction === 'Add') {
+
+                    /*addNewAccount({ variables: { ep: {
+                      glcode: code.value,
+                      glhead: title.value,
+                      subgrpglcode: "010102",
+                      enteredby: "tsawan",
+                      enteredon: "2020-05-19"
+                    } } });*/
+                  }
+                  if (values.submitAction === 'Modify') {
+
+                    
+                  }
+                  if (values.submitAction === 'Delete') {
+
+                    
+                  }
+                  alert("Submit Action:" + values.submitAction + JSON.stringify(values, null, 2))
                   setSubmitting(false)
                 }, 400)
               }}
+              
             >
               {(props) => (
                 <form onSubmit={props.handleSubmit}>
@@ -188,7 +213,7 @@ const coa1 = () => {
                         <input
                           type="radio"
                           name="ledgerType"
-                          value="Normal"
+                          value="Sub Ledger"
                           checked={props.values.ledgerType === 'Sub Ledger'}
                           onChange={props.handleChange}
                         />
@@ -242,7 +267,7 @@ const coa1 = () => {
                       w="100%"
                       templateColumns="repeat(2, minmax(300px, 1fr))"
                     >
-                      <CRUDToolBar />
+                      <CRUDToolBar {...props}/>
                       <BasicToolBar />
                     </Grid>
                   </Box>
