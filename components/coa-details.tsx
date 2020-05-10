@@ -1,4 +1,4 @@
-import { Button, Tooltip } from 'antd'
+import { Button, Tooltip, Card } from 'antd'
 
 export function COADetails(props) {
   return (
