@@ -121,13 +121,13 @@ const coa1 = () => {
                 setTimeout(() => {
                   if (values.submitAction === 'Add') {
 
-                    /*addNewAccount({ variables: { ep: {
-                      glcode: code.value,
-                      glhead: title.value,
+                    addNewAccount({ variables: { ep: {
+                      glcode: values.mainGrpCode,
+                      glhead: values.mainGroupDesc,
                       subgrpglcode: "010102",
                       enteredby: "tsawan",
                       enteredon: "2020-05-19"
-                    } } });*/
+                    } } });
                   }
                   if (values.submitAction === 'Modify') {
 
