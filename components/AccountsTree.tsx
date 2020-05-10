@@ -91,7 +91,6 @@ const AccountsTree = ({ onTreeSelect }) => {
       .map((node) => node.title)
     const result = []
     let current: any = { key: info.node.key, title: stripCode(title[0]) }
-    let selected = current
     result.push(current)
     while (current) {
       let _parent = getParent(current.key, treeData)

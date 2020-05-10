@@ -18,7 +18,7 @@ const coa1 = () => {
   const [values, setValues] = useState({
     mainGrpCode: '01',
     mainGroupDesc: 'Property and AssetsXX',
-    glGroup: '0108',
+    glGroupCode: '0108',
     glGroupDesc: 'Trade debitors',
     subGroupCode: '010802',
     subGroupDesc: 'Local debitors',
@@ -40,16 +40,20 @@ const coa1 = () => {
     const level = selection.length
     console.log(`level ${selection.length}`)
     console.log('selection ', selection)
-    // todo: improve later
+    // todo: move out
+    const MAX_LEVEL: number = 4
+    for (let i = level; i < MAX_LEVEL; i++)
+      selection[i] = { key: '', title: '' }
+
     let updated: any = {
       mainGrpCode: selection[0].key,
       mainGroupDesc: selection[0].title,
-      glGroup: '',
-      glGroupDesc: '',
-      subGroupCode: '',
-      subGroupDesc: '',
-      glCode: '',
-      glHead: '',
+      glGroupCode: selection[1].key,
+      glGroupDesc: selection[1].title,
+      subGroupCode: selection[2].key,
+      subGroupDesc: selection[2].title,
+      glCode: selection[3].key,
+      glHead: selection[3].title,
     }
     if (level > 1) {
       updated.glGroup = selection[1].key
@@ -97,7 +101,7 @@ const coa1 = () => {
               initialValues={{
                 mainGrpCode: values.mainGrpCode,
                 mainGroupDesc: values.mainGroupDesc,
-                glGroup: values.glGroup,
+                glGroupCode: values.glGroupCode,
                 glGroupDesc: values.glGroupDesc,
                 subGroupCode: values.subGroupCode,
                 subGroupDesc: values.subGroupDesc,
@@ -121,13 +125,13 @@ const coa1 = () => {
                 setTimeout(() => {
                   if (values.submitAction === 'Add') {
 
-                    addNewAccount({ variables: { ep: {
-                      glcode: values.mainGrpCode,
-                      glhead: values.mainGroupDesc,
+                    /*addNewAccount({ variables: { ep: {
+                      glcode: code.value,
+                      glhead: title.value,
                       subgrpglcode: "010102",
                       enteredby: "tsawan",
                       enteredon: "2020-05-19"
-                    } } });
+                    } } });*/
                   }
                   if (values.submitAction === 'Modify') {
 
@@ -165,8 +169,8 @@ const coa1 = () => {
                       />
                       <input
                         type="text"
-                        name="glGroup"
-                        value={props.values.glGroup}
+                        name="glGroupCode"
+                        value={props.values.glGroupCode}
                       />
                       <input
                         type="text"
