@@ -8,20 +8,30 @@ const linkStyle = {
   marginRight: 15,
 }
 
-export function CRUDToolBar() {
+export const CRUDToolBar = props => {
+
   return (
     <div>
-      <Button type="primary">Add</Button>
-      <Button type="primary">Modify</Button>
-      <Button type="primary">Delete</Button>
+      <Button type="primary" onClick={() => {
+              props.values.submitAction='Add';
+              props.handleSubmit();
+            }}>Add</Button>
+      <Button type="default" onClick={() => {
+              props.values.submitAction='Modify';
+              props.handleSubmit();
+            }}>Modify</Button>
+      <Button type="danger"  onClick={() => {
+              props.values.submitAction='Delete';
+              props.handleSubmit();
+            }}>Delete</Button>
     </div>
   )
 }
 export function BasicToolBar() {
   return (
     <div>
-      <Button type="primary">OK</Button>
-      <Button type="primary">Cancel</Button>
+      <Button type="default" htmlType="button">OK</Button>
+      <Button type="primary" htmlType="reset">Cancel</Button>
     </div>
   )
 }
