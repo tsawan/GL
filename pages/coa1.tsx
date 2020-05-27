@@ -7,14 +7,19 @@ import AccountsTree from '../components/AccountsTree'
 import { useState } from 'react'
 
 import SliderLayout from '../components/SliderPageLayout'
-import { SearchToolBar, BasicToolBar, CRUDToolBar } from '../components/Toolbar'
-import { PageHeader } from 'antd'
-import { useMutation, useLazyQuery } from '@apollo/react-hooks';
-import { addGlCode, addSubGrpGlCode, getSubGroupsByGroupCode } from '../queries/accounts'
-
+import { SearchToolBar, CRUDToolBar } from '../components/Toolbar'
+import { PageHeader, Input, Radio, Switch, Select } from 'antd'
+import { useMutation, useLazyQuery } from '@apollo/react-hooks'
+import {
+  addGlCode,
+  addSubGrpGlCode,
+  getSubGroupsByGroupCode,
+} from '../queries/accounts'
+import moment from 'moment'
+import { COADetails } from '../components/coa-details'
 
 const coa1 = () => {
-  const [addNewAccount, { data }] = useMutation(addGlCode);
+  const [addNewAccount, { data }] = useMutation(addGlCode)
   const [values, setValues] = useState({
     mainGrpCode: '01',
     mainGroupDesc: 'Property and AssetsXX',
@@ -35,7 +40,7 @@ const coa1 = () => {
     mx: '6',
     mb: '6',
   }
-
+  const { Option } = Select;
   const onTreeSelect = (selection) => {
     const level = selection.length
     console.log(`level ${selection.length}`)
@@ -107,8 +112,9 @@ const coa1 = () => {
                 subGroupDesc: values.subGroupDesc,
                 glCode: values.glCode,
                 glHead: values.glHead,
-                ledgerType: 'Sales',
-                submitAction: undefined
+                ledgerType: 'Normal',
+                submitAction: undefined,
+                isSubmitting: false,
               }}
               //handleChange={(values, { event }) => {
               //  console.log(values)
@@ -116,36 +122,37 @@ const coa1 = () => {
               validate={(values) => {
                 const errors = {}
                 //if (!values.mainGrpCode) {
-                  //errors.mainGrpCode = 'Required'
+                //errors.mainGrpCode = 'Required'
                 //}
                 return errors
               }}
               onSubmit={(values, { setSubmitting }) => {
-                
                 setTimeout(() => {
                   if (values.submitAction === 'Add') {
-
-                    /*addNewAccount({ variables: { ep: {
-                      glcode: code.value,
-                      glhead: title.value,
-                      subgrpglcode: "010102",
-                      enteredby: "tsawan",
-                      enteredon: "2020-05-19"
-                    } } });*/
+                    addNewAccount({
+                      variables: {
+                        ep: {
+                          glcode: values.glGroupCode,
+                          glhead: values.glGroupDesc,
+                          subgrpglcode: '010102',
+                          enteredby: 'khanbx0a',
+                          enteredon: moment(new Date()).format('YYYY-MM-DD'),
+                        },
+                      },
+                    })
                   }
                   if (values.submitAction === 'Modify') {
-
-                    
                   }
                   if (values.submitAction === 'Delete') {
-
-                    
                   }
-                  alert("Submit Action:" + values.submitAction + JSON.stringify(values, null, 2))
+                  alert(
+                    'Submit Action:' +
+                      values.submitAction +
+                      JSON.stringify(values, null, 2),
+                  )
                   setSubmitting(false)
                 }, 400)
               }}
-              
             >
               {(props) => (
                 <form onSubmit={props.handleSubmit}>
@@ -157,125 +164,113 @@ const coa1 = () => {
                       templateColumns="repeat(2, minmax(300px, 1fr))"
                       gap={2}
                     >
-                      <input
+                      <Input
                         type="text"
                         name="mainGrpCode"
+                        onChange={props.handleChange}
+                        onBlur={props.handleBlur}
                         value={props.values.mainGrpCode}
                       />
-                      <input
+                      <Input
                         type="text"
                         name="mainGroupDesc"
+                        onChange={props.handleChange}
+                        onBlur={props.handleBlur}
                         value={props.values.mainGroupDesc}
                       />
-                      <input
+                      <Input
                         type="text"
                         name="glGroupCode"
+                        onChange={props.handleChange}
+                        onBlur={props.handleBlur}
                         value={props.values.glGroupCode}
                       />
-                      <input
+                      <Input
                         type="text"
                         name="glGroupDesc"
+                        onChange={props.handleChange}
+                        onBlur={props.handleBlur}
                         value={props.values.glGroupDesc}
                       />
-                      <input
+                      <Input
                         type="text"
                         name="subGroupCode"
+                        onChange={props.handleChange}
+                        onBlur={props.handleBlur}
                         value={props.values.subGroupCode}
                       />
-                      <input
+                      <Input
                         type="text"
                         name="subGroupDesc"
+                        onChange={props.handleChange}
+                        onBlur={props.handleBlur}
                         value={props.values.subGroupDesc}
                       />
                     </Grid>
                   </Box>
-
-                  <Box borderWidth="1px" rounded="lg">
-                    {/* Lower section defining the G/L codes*/}
-                    <label>
-                      G/L Code
-                      <input name="glCode" value={props.values.glCode} />
-                    </label>
-                    <label>
-                      G/L Head
-                      <input id="glHead" value={props.values.glHead} />
-                    </label>
-                    #{/* Configuration */}
+                  <p>
+                    G/L code
                     <Box borderWidth="1px" rounded="lg">
+                      {/* Lower section defining the G/L codes*/}
+
+                      <Switch defaultChecked onChange={props.handleChange} />
                       <label>
-                        <input
-                          type="radio"
-                          name="ledgerType"
-                          value="Normal"
-                          checked={props.values.ledgerType === 'Normal'}
+                        G/L Code
+                        <Input
+                          name="glCode"
+                          value={props.values.glCode}
                           onChange={props.handleChange}
+                          onBlur={props.handleBlur}
                         />
-                        Normal
                       </label>
 
                       <label>
-                        <input
-                          type="radio"
-                          name="ledgerType"
-                          value="Sub Ledger"
-                          checked={props.values.ledgerType === 'Sub Ledger'}
+                        G/L Head
+                        <Input
+                          id="glHead"
+                          value={props.values.glHead}
                           onChange={props.handleChange}
+                          onBlur={props.handleBlur}
                         />
-                        Sub Ledger
                       </label>
 
                       <label>
-                        <input
-                          type="radio"
-                          name="ledgerType"
-                          value="Bank"
-                          checked={props.values.ledgerType === 'Bank'}
-                          onChange={props.handleChange}
-                        />
-                        Bank
+                        B/s -PL Ref
+                        <Select
+                          showSearch
+                          style={{ width: 200 }}
+                          placeholder="Select a Linked Account"
+                          optionFilterProp="children"
+                          filterOption={(input, option) =>
+                            option.children
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+                          }
+                        >
+                          <Option value="XX">XX</Option>
+                        </Select>
                       </label>
-
-                      <label>
-                        <input
-                          type="radio"
+                      {/* Configuration */}
+                      <Box borderWidth="1px" rounded="lg">
+                        <Radio.Group
                           name="ledgerType"
-                          value="Cash"
-                          checked={props.values.ledgerType === 'Cash'}
                           onChange={props.handleChange}
-                        />
-                        Cash
-                      </label>
-                      <label>
-                        <input
-                          type="radio"
-                          name="ledgerType"
-                          value="Sales"
-                          checked={props.values.ledgerType === 'Sales'}
-                          onChange={props.handleChange}
-                        />
-                        Sales
-                      </label>
-
-                      <label>
-                        <input
-                          type="radio"
-                          name="ledgerType"
-                          value="Purchase"
-                          checked={props.values.ledgerType === 'Purchase'}
-                          onChange={props.handleChange}
-                        />
-                        Purchase
-                      </label>
+                          defaultValue="Normal"
+                        >
+                          <Radio.Button value="Normal">Normal</Radio.Button>
+                          <Radio.Button value="Sub Ledger">
+                            Sub Ledger
+                          </Radio.Button>
+                          <Radio.Button value="Bank">Bank</Radio.Button>
+                          <Radio.Button value="Sales">Sales</Radio.Button>
+                          <Radio.Button value="Purchase">Purchase</Radio.Button>
+                        </Radio.Group>
+                      </Box>
+                      <COADetails {...props} />
+                      <CRUDToolBar {...props} />
                     </Box>
-                    <Grid
-                      w="100%"
-                      templateColumns="repeat(2, minmax(300px, 1fr))"
-                    >
-                      <CRUDToolBar {...props}/>
-                      <BasicToolBar />
-                    </Grid>
-                  </Box>
-                  {/*<DisplayFormikState {...props} />*/}
+                  </p>
+                  <DisplayFormikState {...props} />
                 </form>
               )}
             </Formik>
