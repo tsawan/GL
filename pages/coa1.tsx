@@ -22,7 +22,7 @@ const coa1 = () => {
   const [addNewAccount, { data }] = useMutation(addGlCode)
   const [values, setValues] = useState({
     mainGrpCode: '01',
-    mainGroupDesc: 'Property and AssetsXX',
+    mainGroupDesc: 'Property and Assets',
     glGroupCode: '0108',
     glGroupDesc: 'Trade debitors',
     subGroupCode: '010802',
@@ -59,18 +59,6 @@ const coa1 = () => {
       subGroupDesc: selection[2].title,
       glCode: selection[3].key,
       glHead: selection[3].title,
-    }
-    if (level > 1) {
-      updated.glGroup = selection[1].key
-      updated.glGroupDesc = selection[1].title
-    }
-    if (level > 2) {
-      updated.subGroupCode = selection[2].key
-      updated.subGroupDesc = selection[2].title
-    }
-    if (level > 3) {
-      updated.glCode = selection[3].key
-      updated.glHead = selection[3].title
     }
     setValues(updated)
   }
