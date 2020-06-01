@@ -14,6 +14,7 @@
     "@chakra-ui/core": "^0.7.0",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
+    "@xstate/react": "^0.8.1",
     "ag-grid-community": "^23.0.2",
     "ag-grid-react": "^23.0.2",
     "antd": "^4.1.1",
@@ -29,6 +30,7 @@
     "react": "16.13.1",
     "react-apollo": "^3.1.4",
     "react-dom": "16.13.1",
+    "xstate": "^4.10.0",
     "yup": "^0.28.3"
   },
   "devDependencies": {
