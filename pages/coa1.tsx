@@ -6,6 +6,8 @@ import { Box, Flex, Grid } from '@chakra-ui/core'
 import AccountsTree from '../components/AccountsTree'
 import { PropertyKeys } from 'ag-grid-community'
 import { useState } from 'react'
+import { useMutation, useLazyQuery } from '@apollo/react-hooks'
+import { getRecCounts } from '../queries/accounts'
 
 import SliderLayout from '../components/SliderPageLayout'
 import { SearchToolBar, CRUDToolBar, BasicToolBar } from '../components/Toolbar'
@@ -22,6 +24,8 @@ const coa1 = () => {
     glCode: '010802001',
     glHead: 'Trade debitors',
   })
+
+  const [recCounts, { loading, data }] = useLazyQuery(getRecCounts)
 
   const flexSettings = {
     flex: '1',
@@ -237,6 +241,10 @@ const coa1 = () => {
                     >
                       <CRUDToolBar />
                       <BasicToolBar />
+                      {data
+                        ? console.log('counts', transformCounts(data))
+                        : 'No Counts yet'}
+                      <button onClick={() => recCounts()}>Get RecCounts</button>
                     </Grid>
                   </Box>
                   {/*<DisplayFormikState {...props} />*/}
@@ -248,5 +256,14 @@ const coa1 = () => {
       </div>
     </SliderLayout>
   )
+}
+
+const transformCounts = (data) => {
+  return {
+    level1: data.level1.count.count,
+    level2: data.level2.count.count,
+    level3: data.level3.count.count,
+    level4: data.level4.count.count,
+  }
 }
 export default coa1
