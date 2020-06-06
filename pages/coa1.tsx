@@ -5,11 +5,12 @@ import { Box, Flex, Grid } from '@chakra-ui/core'
 import AccountsTree from '../components/AccountsTree'
 
 import { useState } from 'react'
+import { useMutation, useLazyQuery } from '@apollo/react-hooks'
+import { getRecCounts } from '../queries/accounts'
 
 import SliderLayout from '../components/SliderPageLayout'
 import { SearchToolBar, CRUDToolBar } from '../components/Toolbar'
 import { PageHeader, Input, Radio, Switch, Select } from 'antd'
-import { useMutation, useLazyQuery } from '@apollo/react-hooks'
 import {
   addGlCode,
   addSubGrpGlCode,
@@ -32,6 +33,8 @@ const coa1 = () => {
     submitAction: undefined,
   })
 
+  const [recCounts, countState] = useLazyQuery(getRecCounts)
+
   const flexSettings = {
     flex: '1',
     minW: '300px',
@@ -40,7 +43,7 @@ const coa1 = () => {
     mx: '6',
     mb: '6',
   }
-  const { Option } = Select;
+  const { Option } = Select
   const onTreeSelect = (selection) => {
     const level = selection.length
     console.log(`level ${selection.length}`)
@@ -259,6 +262,10 @@ const coa1 = () => {
                     </Box>
                   </p>
                   <DisplayFormikState {...props} />
+                  {countState.data
+                    ? console.log('counts', transformCounts(countState.data))
+                    : 'No Counts yet'}
+                  <button onClick={() => recCounts()}>Get RecCounts</button>
                 </form>
               )}
             </Formik>
@@ -267,5 +274,14 @@ const coa1 = () => {
       </div>
     </SliderLayout>
   )
+}
+
+const transformCounts = (data) => {
+  return {
+    level1: data.level1.count.count,
+    level2: data.level2.count.count,
+    level3: data.level3.count.count,
+    level4: data.level4.count.count,
+  }
 }
 export default coa1
