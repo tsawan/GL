@@ -18,9 +18,11 @@ import {
 } from '../queries/accounts'
 import moment from 'moment'
 import { COADetails } from '../components/coa-details'
+import { useAll } from '../hooks/utils'
 
 const coa1 = () => {
   const [addNewAccount, { data }] = useMutation(addGlCode)
+  const { maxNum, invoke } = useAll()
   const [values, setValues] = useState({
     mainGrpCode: '01',
     mainGroupDesc: 'Property and Assets',
@@ -136,11 +138,11 @@ const coa1 = () => {
                   }
                   if (values.submitAction === 'Delete') {
                   }
-                  alert(
-                    'Submit Action:' +
-                      values.submitAction +
-                      JSON.stringify(values, null, 2),
-                  )
+                  // alert(
+                  //   'Submit Action:' +
+                  //     values.submitAction +
+                  //     JSON.stringify(values, null, 2),
+                  // )
                   setSubmitting(false)
                 }, 400)
               }}
@@ -261,7 +263,7 @@ const coa1 = () => {
                       <CRUDToolBar {...props} />
                     </Box>
                   </p>
-                  <DisplayFormikState {...props} />
+                  {/* <DisplayFormikState {...props} /> */}
                   {countState.data
                     ? console.log('counts', transformCounts(countState.data))
                     : 'No Counts yet'}
@@ -269,6 +271,18 @@ const coa1 = () => {
                 </form>
               )}
             </Formik>
+            <h2>{maxNum}</h2>
+            <button onClick={() => invoke(1)}>Get Max Level1</button>
+            <br />
+            <button onClick={() => invoke(2, '03')}>Get Max Level2 (03)</button>
+            <br />
+            <button onClick={() => invoke(3, '0332')}>
+              Get Max Level3 (0332)
+            </button>
+            <br />
+            <button onClick={() => invoke(4, '033111')}>
+              Get Max Level4 (033111)
+            </button>
           </Box>
         </Flex>
       </div>
