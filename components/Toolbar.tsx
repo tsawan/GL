@@ -41,7 +41,7 @@ standard strategy would be:
           Modify
         </Button>
         <Button
-          type="danger"
+          type="default"
           name="delete"
           onClick={() => {
             props.values.isSubmitting = true;

@@ -1,7 +1,6 @@
-import "../node_modules/ag-grid-community/dist/styles/ag-grid.css"
-import "../node_modules/ag-grid-community/dist/styles/ag-theme-blue.css"
 import "../main.css"
 import 'antd/dist/antd.css'
+import '../assets/styles/style.css';
 import { AppProps } from 'next/app'
 import React from 'react';
 //import App from 'next/app';

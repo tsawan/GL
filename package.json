@@ -11,11 +11,8 @@
   "dependencies": {
     "@apollo/react-hooks": "^3.1.4",
     "@apollo/react-ssr": "^3.1.4",
-    "@chakra-ui/core": "^0.7.0",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
-    "ag-grid-community": "^23.0.2",
-    "ag-grid-react": "^23.0.2",
     "antd": "^4.1.1",
     "apollo-boost": "^0.4.7",
     "apollo-cache-inmemory": "^1.6.5",

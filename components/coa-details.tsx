@@ -12,24 +12,25 @@ export function COADetails(props) {
       )}
       {props.values.ledgerType == 'Sub Ledger' && (
         <Card title="Sub Ledger Type" extra={<a href="#">More</a>}>
-          <p>Sub Ledger Type</p>
-          <Radio.Group
-            name="subLedgerType"
-            onChange={props.handleChange}
-            defaultValue="Normal"
-          >
-            <Radio.Button value="Customer">Customer</Radio.Button>
-            <Radio.Button value="Vendor">Vendor</Radio.Button>
-            <Radio.Button value="Other">Other</Radio.Button>
-          </Radio.Group>
-          <label>
-            {'Bill No'}
-            <Switch defaultChecked onChange={props.handleChange} />
-          </label>
+          <div className="glDefinitionsGrid">
+            <label className="item2">Sub Ledger Type</label>
 
-          <p>Synchronized Sub Ledger Codes</p>
-          <label>
-            Linked Inc. Tax Code
+            <Radio.Group
+              name="subLedgerType"
+              onChange={props.handleChange}
+              defaultValue="Normal"
+            >
+              <Radio.Button value="Customer">Customer</Radio.Button>
+              <Radio.Button value="Vendor">Vendor</Radio.Button>
+              <Radio.Button value="Other">Other</Radio.Button>
+            </Radio.Group>
+
+            <label>
+              {'Bill No'}
+              <Switch defaultChecked onChange={props.handleChange} />
+            </label>
+            <label className="item2">Synchronized Sub Ledger Codes</label>
+            <label>Linked Inc. Tax Code</label>
             <Select
               showSearch
               style={{ width: 200 }}
@@ -41,9 +42,8 @@ export function COADetails(props) {
             >
               <Option value="XX">XX</Option>
             </Select>
-          </label>
-          <label>
-            Advance Tax
+
+            <label>Advance Tax</label>
             <Select
               showSearch
               style={{ width: 200 }}
@@ -55,7 +55,7 @@ export function COADetails(props) {
             >
               <Option value="XX">XX</Option>
             </Select>
-          </label>
+          </div>
         </Card>
       )}
       {props.values.ledgerType == 'Bank' && (
@@ -71,9 +71,8 @@ export function COADetails(props) {
       )}
       {props.values.ledgerType == 'Sales' && (
         <Card title="Sales" extra={<a href="#">More</a>}>
-          <p>Sales Configuration</p>
-          <label>
-            Default Receivable Code
+          <div className="glDefinitionsGrid">
+            <label>Default Receivable Code</label>
             <Select
               showSearch
               style={{ width: 200 }}
@@ -85,9 +84,7 @@ export function COADetails(props) {
             >
               <Option value="XX">XX</Option>
             </Select>
-          </label>
-          <label>
-            Sales Tax Control Code
+            <label>Sales Tax Control Code</label>
             <Select
               showSearch
               style={{ width: 200 }}
@@ -99,9 +96,7 @@ export function COADetails(props) {
             >
               <Option value="XX">XX</Option>
             </Select>
-          </label>
-          <label>
-            Further Tax Control Code
+            <label>Further Tax Control Code</label>
             <Select
               showSearch
               style={{ width: 200 }}
@@ -113,13 +108,13 @@ export function COADetails(props) {
             >
               <Option value="XX">XX</Option>
             </Select>
-          </label>
+          </div>
         </Card>
       )}
       {props.values.ledgerType == 'Purchase' && (
         <Card title="Purchase" extra={<a href="#">More</a>}>
-          <label>
-            Default Paybale Code
+          <div className="glDefinitionsGrid">
+            <label>Default Paybale Code</label>
             <Select
               showSearch
               style={{ width: 200 }}
@@ -131,9 +126,7 @@ export function COADetails(props) {
             >
               <Option value="XX">XX</Option>
             </Select>
-          </label>
-          <label>
-            Sales Tax Control Code
+            <label>Sales Tax Control Code</label>
             <Select
               showSearch
               style={{ width: 200 }}
@@ -145,7 +138,7 @@ export function COADetails(props) {
             >
               <Option value="XX">XX</Option>
             </Select>
-          </label>
+          </div>
         </Card>
       )}
     </div>
