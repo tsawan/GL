@@ -1,7 +1,6 @@
 import { Formik } from 'formik'
-import { Divider } from '@chakra-ui/core'
 import { DisplayFormikState } from '../components/helper'
-import { Box, Flex, Grid } from '@chakra-ui/core'
+
 import AccountsTree from '../components/AccountsTree'
 
 import { useState } from 'react'
@@ -9,7 +8,7 @@ import { useMutation, useLazyQuery } from '@apollo/react-hooks'
 import { getRecCounts } from '../queries/accounts'
 
 import SliderLayout from '../components/SliderPageLayout'
-import { SearchToolBar, CRUDToolBar } from '../components/Toolbar'
+import { CRUDToolBar } from '../components/Toolbar'
 import { PageHeader, Input, Radio, Switch, Select } from 'antd'
 import {
   addGlCode,
@@ -75,218 +74,197 @@ const coa1 = () => {
         onBack={() => window.history.back()}
         title="Chart of Account"
       ></PageHeader>
-      <div>
-        <Flex>
-          {/* <Box {...flexSettings} > */}
-          <div
-            style={{
-              height: '80vh',
-              overflowY: 'scroll',
-              border: '1px solid blue',
-              minWidth: '300px',
+      <div className="coaLayout">
+        <div
+          style={{
+            height: '80vh',
+            overflowY: 'scroll',
+            border: '1px solid blue',
+            minWidth: '300px',
+          }}
+        >
+          <AccountsTree onTreeSelect={onTreeSelect} />
+        </div>
+
+        <div>
+          {/* enclosing the top form defining the basic codes*/}
+          <Formik
+            enableReinitialize
+            initialValues={{
+              mainGrpCode: values.mainGrpCode,
+              mainGroupDesc: values.mainGroupDesc,
+              glGroupCode: values.glGroupCode,
+              glGroupDesc: values.glGroupDesc,
+              subGroupCode: values.subGroupCode,
+              subGroupDesc: values.subGroupDesc,
+              glCode: values.glCode,
+              glHead: values.glHead,
+              ledgerType: 'Normal',
+              submitAction: undefined,
+              isSubmitting: false,
+            }}
+            //handleChange={(values, { event }) => {
+            //  console.log(values)
+            //</div>/}}
+            validate={(values) => {
+              const errors = {}
+              //if (!values.mainGrpCode) {
+              //errors.mainGrpCode = 'Required'
+              //}
+              return errors
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+              setTimeout(() => {
+                if (values.submitAction === 'Add') {
+                  addNewAccount({
+                    variables: {
+                      ep: {
+                        glcode: values.glGroupCode,
+                        glhead: values.glGroupDesc,
+                        subgrpglcode: '010102',
+                        enteredby: 'khanbx0a',
+                        enteredon: moment(new Date()).format('YYYY-MM-DD'),
+                      },
+                    },
+                  })
+                }
+                if (values.submitAction === 'Modify') {
+                }
+                if (values.submitAction === 'Delete') {
+                }
+                // alert(
+                //   'Submit Action:' +
+                //     values.submitAction +
+                //     JSON.stringify(values, null, 2),
+                // )
+                setSubmitting(false)
+              }, 400)
             }}
           >
-            <AccountsTree onTreeSelect={onTreeSelect} />
-          </div>
-          {/* </Box> */}
+            {(props) => (
+              <form onSubmit={props.handleSubmit}>
+                {/* Upper section defining the basic codes*/}
+                <div className="glDefinitionsGrid">
+                  <label className="item2">Main Group</label>
 
-          <Divider orientation="vertical" />
+                  <Input
+                    type="text"
+                    name="mainGrpCode"
+                    onChange={props.handleChange}
+                    onBlur={props.handleBlur}
+                    value={props.values.mainGrpCode}
+                  />
+                  <Input
+                    type="text"
+                    name="mainGroupDesc"
+                    onChange={props.handleChange}
+                    onBlur={props.handleBlur}
+                    value={props.values.mainGroupDesc}
+                  />
+                  <label className="item2">G/L Group</label>
+                  <Input
+                    type="text"
+                    name="glGroupCode"
+                    onChange={props.handleChange}
+                    onBlur={props.handleBlur}
+                    value={props.values.glGroupCode}
+                  />
+                  <Input
+                    type="text"
+                    name="glGroupDesc"
+                    onChange={props.handleChange}
+                    onBlur={props.handleBlur}
+                    value={props.values.glGroupDesc}
+                  />
+                  <label className="item2">Sub Group</label>
+                  <Input
+                    type="text"
+                    name="subGroupCode"
+                    onChange={props.handleChange}
+                    onBlur={props.handleBlur}
+                    value={props.values.subGroupCode}
+                  />
+                  <Input
+                    type="text"
+                    name="subGroupDesc"
+                    onChange={props.handleChange}
+                    onBlur={props.handleBlur}
+                    value={props.values.subGroupDesc}
+                  />
+                  <label>G/L Code</label>
+                  <div>
+                    <Switch defaultChecked onChange={props.handleChange} />
+                  </div>
+                  <label>Code</label>
+                  <Input
+                    name="glCode"
+                    value={props.values.glCode}
+                    onChange={props.handleChange}
+                    onBlur={props.handleBlur}
+                  />
+                  <label>Head</label>
+                  <Input
+                    id="glHead"
+                    value={props.values.glHead}
+                    onChange={props.handleChange}
+                    onBlur={props.handleBlur}
+                  />
 
-          <Box {...flexSettings}>
-            {/* enclosing the top form defining the basic codes*/}
-            <Formik
-              enableReinitialize
-              initialValues={{
-                mainGrpCode: values.mainGrpCode,
-                mainGroupDesc: values.mainGroupDesc,
-                glGroupCode: values.glGroupCode,
-                glGroupDesc: values.glGroupDesc,
-                subGroupCode: values.subGroupCode,
-                subGroupDesc: values.subGroupDesc,
-                glCode: values.glCode,
-                glHead: values.glHead,
-                ledgerType: 'Normal',
-                submitAction: undefined,
-                isSubmitting: false,
-              }}
-              //handleChange={(values, { event }) => {
-              //  console.log(values)
-              //</Box>/}}
-              validate={(values) => {
-                const errors = {}
-                //if (!values.mainGrpCode) {
-                //errors.mainGrpCode = 'Required'
-                //}
-                return errors
-              }}
-              onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                  if (values.submitAction === 'Add') {
-                    addNewAccount({
-                      variables: {
-                        ep: {
-                          glcode: values.glGroupCode,
-                          glhead: values.glGroupDesc,
-                          subgrpglcode: '010102',
-                          enteredby: 'khanbx0a',
-                          enteredon: moment(new Date()).format('YYYY-MM-DD'),
-                        },
-                      },
-                    })
-                  }
-                  if (values.submitAction === 'Modify') {
-                  }
-                  if (values.submitAction === 'Delete') {
-                  }
-                  // alert(
-                  //   'Submit Action:' +
-                  //     values.submitAction +
-                  //     JSON.stringify(values, null, 2),
-                  // )
-                  setSubmitting(false)
-                }, 400)
-              }}
-            >
-              {(props) => (
-                <form onSubmit={props.handleSubmit}>
-                  <Box borderWidth="1px" rounded="lg">
-                    <SearchToolBar />
-                    {/* Upper section defining the basic codes*/}
-                    <Grid
-                      w="100%"
-                      templateColumns="repeat(2, minmax(300px, 1fr))"
-                      gap={2}
-                    >
-                      <Input
-                        type="text"
-                        name="mainGrpCode"
-                        onChange={props.handleChange}
-                        onBlur={props.handleBlur}
-                        value={props.values.mainGrpCode}
-                      />
-                      <Input
-                        type="text"
-                        name="mainGroupDesc"
-                        onChange={props.handleChange}
-                        onBlur={props.handleBlur}
-                        value={props.values.mainGroupDesc}
-                      />
-                      <Input
-                        type="text"
-                        name="glGroupCode"
-                        onChange={props.handleChange}
-                        onBlur={props.handleBlur}
-                        value={props.values.glGroupCode}
-                      />
-                      <Input
-                        type="text"
-                        name="glGroupDesc"
-                        onChange={props.handleChange}
-                        onBlur={props.handleBlur}
-                        value={props.values.glGroupDesc}
-                      />
-                      <Input
-                        type="text"
-                        name="subGroupCode"
-                        onChange={props.handleChange}
-                        onBlur={props.handleBlur}
-                        value={props.values.subGroupCode}
-                      />
-                      <Input
-                        type="text"
-                        name="subGroupDesc"
-                        onChange={props.handleChange}
-                        onBlur={props.handleBlur}
-                        value={props.values.subGroupDesc}
-                      />
-                    </Grid>
-                  </Box>
-                  <p>
-                    G/L code
-                    <Box borderWidth="1px" rounded="lg">
-                      {/* Lower section defining the G/L codes*/}
+                  <label>B/s -PL Ref</label>
+                  <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="Select a Linked Account"
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
+                    <Option value="XX">XX</Option>
+                  </Select>
+                </div>
+                {/* Configuration */}
+                <div>
+                  <Radio.Group
+                    name="ledgerType"
+                    onChange={props.handleChange}
+                    defaultValue="Normal"
+                  >
+                    <Radio.Button value="Normal">Normal</Radio.Button>
+                    <Radio.Button value="Sub Ledger">Sub Ledger</Radio.Button>
+                    <Radio.Button value="Bank">Bank</Radio.Button>
+                    <Radio.Button value="Sales">Sales</Radio.Button>
+                    <Radio.Button value="Purchase">Purchase</Radio.Button>
+                  </Radio.Group>
+                </div>
+                <COADetails {...props} />
+                <CRUDToolBar {...props} />
 
-                      <Switch defaultChecked onChange={props.handleChange} />
-                      <label>
-                        G/L Code
-                        <Input
-                          name="glCode"
-                          value={props.values.glCode}
-                          onChange={props.handleChange}
-                          onBlur={props.handleBlur}
-                        />
-                      </label>
-
-                      <label>
-                        G/L Head
-                        <Input
-                          id="glHead"
-                          value={props.values.glHead}
-                          onChange={props.handleChange}
-                          onBlur={props.handleBlur}
-                        />
-                      </label>
-
-                      <label>
-                        B/s -PL Ref
-                        <Select
-                          showSearch
-                          style={{ width: 200 }}
-                          placeholder="Select a Linked Account"
-                          optionFilterProp="children"
-                          filterOption={(input, option) =>
-                            option.children
-                              .toLowerCase()
-                              .indexOf(input.toLowerCase()) >= 0
-                          }
-                        >
-                          <Option value="XX">XX</Option>
-                        </Select>
-                      </label>
-                      {/* Configuration */}
-                      <Box borderWidth="1px" rounded="lg">
-                        <Radio.Group
-                          name="ledgerType"
-                          onChange={props.handleChange}
-                          defaultValue="Normal"
-                        >
-                          <Radio.Button value="Normal">Normal</Radio.Button>
-                          <Radio.Button value="Sub Ledger">
-                            Sub Ledger
-                          </Radio.Button>
-                          <Radio.Button value="Bank">Bank</Radio.Button>
-                          <Radio.Button value="Sales">Sales</Radio.Button>
-                          <Radio.Button value="Purchase">Purchase</Radio.Button>
-                        </Radio.Group>
-                      </Box>
-                      <COADetails {...props} />
-                      <CRUDToolBar {...props} />
-                    </Box>
-                  </p>
-                  <DisplayFormikState {...props} />
-                  {countState.data
-                    ? console.log('counts', transformCounts(countState.data))
-                    : 'No Counts yet'}
-                  <button onClick={() => recCounts()}>Get RecCounts</button>
-                </form>
-              )}
-            </Formik>
-            <h2>{maxNumber}</h2>
-            <button onClick={() => fetchMaxNumber(1)}>Get Max Level1</button>
-            <br />
-            <button onClick={() => fetchMaxNumber(2, '03')}>
-              Get Max Level2 (03)
-            </button>
-            <br />
-            <button onClick={() => fetchMaxNumber(3, '0332')}>
-              Get Max Level3 (0332)
-            </button>
-            <br />
-            <button onClick={() => fetchMaxNumber(4, '033111')}>
-              Get Max Level4 (033111)
-            </button>
-          </Box>
-        </Flex>
+                <DisplayFormikState {...props} />
+                {countState.data
+                  ? console.log('counts', transformCounts(countState.data))
+                  : 'No Counts yet'}
+                <button onClick={() => recCounts()}>Get RecCounts</button>
+              </form>
+            )}
+          </Formik>
+          <h2>{maxNumber}</h2>
+          <button onClick={() => fetchMaxNumber(1)}>Get Max Level1</button>
+          <br />
+          <button onClick={() => fetchMaxNumber(2, '03')}>
+            Get Max Level2 (03)
+          </button>
+          <br />
+          <button onClick={() => fetchMaxNumber(3, '0332')}>
+            Get Max Level3 (0332)
+          </button>
+          <br />
+          <button onClick={() => fetchMaxNumber(4, '033111')}>
+            Get Max Level4 (033111)
+          </button>
+        </div>
       </div>
     </SliderLayout>
   )

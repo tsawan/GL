@@ -2,8 +2,7 @@
 // from same page 
 // with different render functions (internal components)
 
-import { Divider } from '@chakra-ui/core'
-import { Box, Flex, Grid } from '@chakra-ui/core'
+
 import { useMutation, useLazyQuery } from '@apollo/react-hooks';
 import { addGlCode, addSubGrpGlCode, getSubGroupsByGroupCode } from '../queries/accounts'
 import { useState} from 'react';
@@ -13,15 +12,13 @@ const coa2 = () => {
 
   return (
     <div>
-      <Flex>
-
         <div
           style={{ height: "50vh", border: "1px solid red" }}>
           
           {AddGlCode()}
         </div>
 
-        <Divider orientation="vertical" />
+        <hr/>
 
         <div
           style={{ height: "50vh", border: "1px solid red" }}>
@@ -29,15 +26,13 @@ const coa2 = () => {
           {AddSubGrpGlCode()}
         </div>
 
-        <Divider orientation="vertical" />
+        <hr/>
 
         <div
           style={{ height: "40vh", border: "1px solid red" }}>
           
           {ShowData()}
         </div>
-
-      </Flex>
     </div>
   )
 }
