@@ -3,7 +3,7 @@ import { DisplayFormikState } from '../components/helper'
 
 import AccountsTree from '../components/AccountsTree'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useMutation, useLazyQuery } from '@apollo/react-hooks'
 import { getRecCounts } from '../queries/accounts'
 
@@ -20,6 +20,7 @@ import { COADetails } from '../components/coa-details'
 import { useMaxNumber } from '../hooks/utils'
 
 const coa1 = () => {
+  const [level,setLevel]= useState(0);
   const [addNewAccount, { data }] = useMutation(addGlCode)
   const { maxNumber, fetchMaxNumber } = useMaxNumber()
   const [values, setValues] = useState({
@@ -35,6 +36,10 @@ const coa1 = () => {
   })
 
   const [recCounts, countState] = useLazyQuery(getRecCounts)
+
+  useEffect(() => {
+
+  })
 
   const flexSettings = {
     flex: '1',
@@ -64,7 +69,9 @@ const coa1 = () => {
       glCode: selection[3].key,
       glHead: selection[3].title,
     }
-    setValues(updated)
+    setValues(updated);
+
+    if (updated.mainGroupDesc=="Chart of Account") setLevel(0); else  setLevel(level);
   }
 
   return (
@@ -115,8 +122,51 @@ const coa1 = () => {
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(() => {
+                         
+                const formdata = {...values};
                 if (values.submitAction === 'Add') {
-                  addNewAccount({
+                  console.log('Action:'+values.submitAction);
+                  //clearing all fields
+                  //determining the level at which nodes needs to be added.
+
+                  
+                  switch(level) {
+                    case 0:
+                      console.log('level 0 at the root level');
+                      formdata.mainGrpCode = (maxNumber+1).toString();
+                      formdata.mainGroupDesc ='';
+                      console.log('level 0 >> Generated Code for formdata.mainGrpCode:'+formdata.mainGrpCode);
+                      break;
+                    case 1:
+                      console.log('level 1 >>formdata.mainGrpCode:'+formdata.mainGrpCode);
+                      //fetchMaxNumber(2, formdata.mainGrpCode)
+                      formdata.glGroupCode = '0119'; //(maxNumber+1).toString();
+                      formdata.glGroupDesc ='';
+                      console.log('level 1 >> Generated Code for formdata.glGroupCode:'+formdata.glGroupCode);
+                      break;
+                    case 2:
+                      console.log('level 2 >>formdata.glGroupCode:'+formdata.glGroupCode);
+                      fetchMaxNumber(3, formdata.glGroupCode)
+                      formdata.subGroupCode = (maxNumber+1).toString();
+                      formdata.subGroupDesc='';
+                      console.log('level 2 >> Generated Code for formdata.subGroupCode:'+formdata.subGroupCode);
+                      break;
+                    
+                    case 3:
+                      console.log('level 3 >>formdata.subGroupCode:'+formdata.subGroupCode);
+                      fetchMaxNumber(4, formdata.subGroupCode)
+                      formdata.glCode = (maxNumber+1).toString();
+                      formdata.glHead='';
+                      console.log('level 3 >> Generated Code>>'+formdata.glCode);
+                      break;
+                    case 4:
+                      console.log('level 4 >> cannot be added further');
+                      break
+                  
+                    default:
+                   
+                  }
+                 /* addNewAccount({
                     variables: {
                       ep: {
                         glcode: values.glGroupCode,
@@ -126,17 +176,13 @@ const coa1 = () => {
                         enteredon: moment(new Date()).format('YYYY-MM-DD'),
                       },
                     },
-                  })
+                  })*/
                 }
                 if (values.submitAction === 'Modify') {
                 }
                 if (values.submitAction === 'Delete') {
                 }
-                // alert(
-                //   'Submit Action:' +
-                //     values.submitAction +
-                //     JSON.stringify(values, null, 2),
-                // )
+                setValues(formdata);
                 setSubmitting(false)
               }, 400)
             }}

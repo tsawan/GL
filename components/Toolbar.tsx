@@ -19,12 +19,12 @@ standard strategy would be:
     <div>
       <div>
         <Button
-          type="primary"
+          type="default"
           name="add"
           onClick={() => {
             props.values.isSubmitting = true;
             props.values.submitAction = 'Add';
-            props.resetForm();
+            props.handleSubmit();
           }}
         >
           Add
@@ -67,14 +67,14 @@ standard strategy would be:
           OK
         </Button>
         <Button
-          type="primary"
+          type="default"
           htmlType="reset"
           name="reset"
           disabled={!props.values.isSubmitting}
           onClick={() => {
 
             props.values.submitAction = 'Cancel'
-            props.handleSubmit()
+            props.resetForm();
           }}
         >
           Cancel
