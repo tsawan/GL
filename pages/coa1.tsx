@@ -20,7 +20,7 @@ import { COADetails } from '../components/coa-details'
 import { useMaxNumber } from '../hooks/utils'
 
 const coa1 = () => {
-  const [level,setLevel]= useState(0);
+  const [level, setLevel] = useState(0)
   const [addNewAccount, { data }] = useMutation(addGlCode)
   const { maxNumber, fetchMaxNumber } = useMaxNumber()
   const [values, setValues] = useState({
@@ -38,8 +38,28 @@ const coa1 = () => {
   const [recCounts, countState] = useLazyQuery(getRecCounts)
 
   useEffect(() => {
+    if (maxNumber === 0) return
+    if (level < 1 || level > 3) return
+    let updValues: any = { ...values }
 
-  })
+    switch (level) {
+      case 1:
+        updValues.glGroupCode = (maxNumber + 1).toString()
+        updValues.glGroupDesc = ''
+        setValues(updValues)
+        break
+      case 2:
+        updValues.subGroupCode = (maxNumber + 1).toString()
+        updValues.subGroupDesc = ''
+        setValues(updValues)
+        break
+      case 3:
+        updValues.glCode = (maxNumber + 1).toString()
+        updValues.glHead = ''
+        setValues(updValues)
+        break
+    }
+  }, [maxNumber])
 
   const flexSettings = {
     flex: '1',
@@ -69,9 +89,10 @@ const coa1 = () => {
       glCode: selection[3].key,
       glHead: selection[3].title,
     }
-    setValues(updated);
+    setValues(updated)
 
-    if (updated.mainGroupDesc=="Chart of Account") setLevel(0); else  setLevel(level);
+    if (updated.mainGroupDesc == 'Chart of Account') setLevel(0)
+    else setLevel(level)
   }
 
   return (
@@ -122,51 +143,45 @@ const coa1 = () => {
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(() => {
-                         
-                const formdata = {...values};
+                const formdata = { ...values }
                 if (values.submitAction === 'Add') {
-                  console.log('Action:'+values.submitAction);
+                  console.log('Action:' + values.submitAction)
                   //clearing all fields
                   //determining the level at which nodes needs to be added.
 
-                  
-                  switch(level) {
+                  switch (level) {
                     case 0:
+                      // add not allowed here.
+                      /*
                       console.log('level 0 at the root level');
-                      formdata.mainGrpCode = (maxNumber+1).toString();
-                      formdata.mainGroupDesc ='';
-                      console.log('level 0 >> Generated Code for formdata.mainGrpCode:'+formdata.mainGrpCode);
-                      break;
-                    case 1:
-                      console.log('level 1 >>formdata.mainGrpCode:'+formdata.mainGrpCode);
-                      //fetchMaxNumber(2, formdata.mainGrpCode)
-                      formdata.glGroupCode = '0119'; //(maxNumber+1).toString();
-                      formdata.glGroupDesc ='';
-                      console.log('level 1 >> Generated Code for formdata.glGroupCode:'+formdata.glGroupCode);
-                      break;
-                    case 2:
-                      console.log('level 2 >>formdata.glGroupCode:'+formdata.glGroupCode);
-                      fetchMaxNumber(3, formdata.glGroupCode)
-                      formdata.subGroupCode = (maxNumber+1).toString();
-                      formdata.subGroupDesc='';
-                      console.log('level 2 >> Generated Code for formdata.subGroupCode:'+formdata.subGroupCode);
-                      break;
-                    
-                    case 3:
-                      console.log('level 3 >>formdata.subGroupCode:'+formdata.subGroupCode);
-                      fetchMaxNumber(4, formdata.subGroupCode)
-                      formdata.glCode = (maxNumber+1).toString();
-                      formdata.glHead='';
-                      console.log('level 3 >> Generated Code>>'+formdata.glCode);
-                      break;
-                    case 4:
-                      console.log('level 4 >> cannot be added further');
+                      */
                       break
-                  
-                    default:
-                   
+                    case 1:
+                      console.log(
+                        'level 1 >>formdata.mainGrpCode:' +
+                          formdata.mainGrpCode,
+                      )
+                      fetchMaxNumber(2, formdata.mainGrpCode)
+                      break
+                    case 2:
+                      console.log(
+                        'level 2 >>formdata.glGroupCode:' +
+                          formdata.glGroupCode,
+                      )
+                      fetchMaxNumber(3, formdata.glGroupCode)
+                      break
+                    case 3:
+                      console.log(
+                        'level 3 >>formdata.subGroupCode:' +
+                          formdata.subGroupCode,
+                      )
+                      fetchMaxNumber(4, formdata.subGroupCode)
+                      break
+                    case 4:
+                      console.log('level 4 >> cannot be added further')
+                      break
                   }
-                 /* addNewAccount({
+                  /* addNewAccount({
                     variables: {
                       ep: {
                         glcode: values.glGroupCode,
@@ -182,7 +197,7 @@ const coa1 = () => {
                 }
                 if (values.submitAction === 'Delete') {
                 }
-                setValues(formdata);
+                setValues(formdata)
                 setSubmitting(false)
               }, 400)
             }}
@@ -296,7 +311,9 @@ const coa1 = () => {
               </form>
             )}
           </Formik>
-          <h2>{maxNumber}</h2>
+          <h2>
+            {maxNumber}...{level}
+          </h2>
           <button onClick={() => fetchMaxNumber(1)}>Get Max Level1</button>
           <br />
           <button onClick={() => fetchMaxNumber(2, '03')}>
