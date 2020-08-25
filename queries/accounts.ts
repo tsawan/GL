@@ -83,6 +83,15 @@ const addSubGrpGlCode = gql`
   }
 `
 
+const addGrpGlCode = gql`
+  mutation addGlCode3($ep: grpglcodes_insert_input!) {
+    insert_grpglcodes_one(object: $ep) {
+      grpglcode
+      grpglhead
+    }
+  }
+`
+
 const getSubGroupsByGroupCode = gql`
   query getSubGrpGlCodes($val: bpchar) {
     subgrpglcodes(where: { grpglcode: { _eq: $val } }) {
@@ -119,6 +128,7 @@ const getRecCounts = gql`
 export {
   addGlCode,
   addSubGrpGlCode,
+  addGrpGlCode,
   getSubGroupsByGroupCode,
   getRecCounts,
   getMaxLevel1,
