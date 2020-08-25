@@ -92,6 +92,26 @@ const addGrpGlCode = gql`
   }
 `
 
+const updateGrpGlCode = gql`
+  mutation updateGlCode3(
+    $ep: grpglcodes_set_input!
+    $ep2: grpglcodes_pk_columns_input!
+  ) {
+    update_grpglcodes_by_pk(_set: $ep, pk_columns: $ep2) {
+      grpglcode
+      grpglhead
+    }
+  }
+`
+
+const deleteGrpGlCode = gql`
+  mutation MyMutation($pk: bpchar!) {
+    delete_grpglcodes_by_pk(grpglcode: $pk) {
+      title
+    }
+  }
+`
+
 const getSubGroupsByGroupCode = gql`
   query getSubGrpGlCodes($val: bpchar) {
     subgrpglcodes(where: { grpglcode: { _eq: $val } }) {
@@ -129,6 +149,8 @@ export {
   addGlCode,
   addSubGrpGlCode,
   addGrpGlCode,
+  updateGrpGlCode,
+  deleteGrpGlCode,
   getSubGroupsByGroupCode,
   getRecCounts,
   getMaxLevel1,
