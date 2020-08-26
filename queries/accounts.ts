@@ -93,7 +93,7 @@ const addGrpGlCode = gql`
 `
 
 const updateGrpGlCode = gql`
-  mutation updateGlCode3(
+  mutation updateGlCode2(
     $ep: grpglcodes_set_input!
     $ep2: grpglcodes_pk_columns_input!
   ) {
@@ -104,9 +104,69 @@ const updateGrpGlCode = gql`
   }
 `
 
+const updateGlCode = gql`
+  mutation updateGlCode4(
+    $ep: glcodes_set_input!
+    $ep2: codes_pk_columns_input!
+  ) {
+    update_glcodes_by_pk(_set: $ep, pk_columns: $ep2) {
+      glcode
+      glhead
+    }
+  }
+`
+
+const updateSubGrpGlCode = gql`
+  mutation updateGlCode3(
+    $ep: subgrpglcodes_set_input!
+    $ep2: subgrpglcodes_pk_columns_input!
+  ) {
+    update_subgrpglcodes_by_pk(_set: $ep, pk_columns: $ep2) {
+      subgrpglcode
+      subgrpglhead
+    }
+  }
+`
+
+const updateGrpGlCodel2 = gql`
+  mutation updateGlCode1(
+    $ep: grpglcodesl2_set_input!
+    $ep2: grpglcodesl2_pk_columns_input!
+  ) {
+    update_grpglcodesl2_by_pk(_set: $ep, pk_columns: $ep2) {
+      grpglcodel2
+      grpglheadl2
+    }
+  }
+`
+
 const deleteGrpGlCode = gql`
-  mutation MyMutation($pk: bpchar!) {
+  mutation deleteGlCode2($pk: bpchar!) {
     delete_grpglcodes_by_pk(grpglcode: $pk) {
+      title
+    }
+  }
+`
+
+const deleteGrpGlCodel2 = gql`
+  mutation deleteGlCode1($pk: bpchar!) {
+    delete_grpglcodesl2_by_pk(grpglcodel2: $pk) {
+      title
+    }
+  }
+`
+
+const deleteSubGrpGlCode = gql`
+  mutation deleteGlCode3($pk: bpchar!) {
+    delete_subgrpglcodes_by_pk(subgrpglcode: $pk) {
+      title
+    }
+  }
+`
+
+const deleteGlCode = gql`
+  mutation deleteGlCode4($pk: bpchar!) {
+    delete_glcodes_by_pk(glcode: $pk) {
       title
     }
   }
@@ -150,7 +210,13 @@ export {
   addSubGrpGlCode,
   addGrpGlCode,
   updateGrpGlCode,
+  updateGlCode,
+  updateGrpGlCodel2,
+  updateSubGrpGlCode,
   deleteGrpGlCode,
+  deleteGlCode,
+  deleteGrpGlCodel2,
+  deleteSubGrpGlCode,
   getSubGroupsByGroupCode,
   getRecCounts,
   getMaxLevel1,
