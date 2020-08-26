@@ -15,7 +15,8 @@ import {
   addGlCode,
   addSubGrpGlCode,
   addGrpGlCode,
-  deleteGrpGlCode
+  deleteGrpGlCode,
+  updateGrpGlCode
 } from '../queries/accounts'
 import moment from 'moment'
 import { COADetails } from '../components/coa-details'
@@ -24,7 +25,9 @@ import { useMaxNumber } from '../hooks/utils'
 const coa1 = () => {
 
   const [level, setLevel] = useState(0);
-  const [deleteCoa, { loading: deleting, error: deleteError }] = useMutation(deleteGrpGlCode);
+  const [deleteCoaLevel2, { loading: deleting, error: deleteError }] = useMutation(deleteGrpGlCode, {
+    onCompleted: successHandler
+  });
   const [addNewAccountLevel2, { }] = useMutation(addGrpGlCode, {
     onCompleted: successHandler
   });
@@ -34,6 +37,10 @@ const coa1 = () => {
   const [addNewAccountLevel4, { }] = useMutation(addGlCode, {
     onCompleted: successHandler
   });
+  const [updateNewAccountLevel2, {}] = useMutation(updateGrpGlCode, {
+    onCompleted: successHandler
+  });
+  
   
   const { maxNumber, fetchMaxNumber } = useMaxNumber()
   const [values, setValues] = useState({
@@ -178,11 +185,27 @@ const coa1 = () => {
 
                 }
                 if (values.submitAction === 'Modify') {
+                  updateNewAccountLevel2({
+                    variables: {
+                      ep: {
+                        grpglhead: values.glGroupDesc,
+                      },
+                      ep2: {
+                        grpglcode: values.glGroupCode,
+                      },
+                    },
+                  }).catch((e) => {
+                    toast.notify(`Error has occurred while updating data. ${e}`,{
+                      duration: 5,
+                      type: "error"
+                    })
+                  });
                 }
                 if (values.submitAction === 'Delete') {
-                  deleteCoa({
+                  //level 2 only
+                  deleteCoaLevel2({
                     variables: {
-                     pk: values.glCode,                
+                      pk: values.glGroupCode,                
                     },
                   }).catch((e) => {
                     toast.notify(`Error has occurred while deleting data. ${e}`,{
@@ -373,7 +396,7 @@ const coa1 = () => {
   )
 }
 const successHandler = () => {
-  toast.notify(`Data added successfully.`,{
+  toast.notify(`Operation performed successfully.`,{
     duration: 5,
     type: "success"
   })
