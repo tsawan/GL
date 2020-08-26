@@ -114,7 +114,7 @@ const AddSubGrpGlCode = () => {
 
     return (
       <div>
-       <h2>Add SubGrp GL Code <br/>under (with prefix) 0103</h2>
+       <h2>Add SubGrp GL Code <br/>under (with prefix) 010</h2>
        <br/>
        Add code like 010384 (6 digits)
         <form
@@ -123,7 +123,7 @@ const AddSubGrpGlCode = () => {
             addNewAccount({ variables: { ep: {
                 subgrpglcode: code.value,
                 subgrpglhead: title.value,
-                grpglcode: "0103",
+                grpglcode: "0101",
                 enteredby: "tsawan",
                 enteredon: "2020-04-18"
               } } });
