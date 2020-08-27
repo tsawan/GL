@@ -8,6 +8,7 @@ const linkStyle = {
   marginRight: 15,
 }
 
+
 export const CRUDToolBar = (props) => {
   /*
 standard strategy would be: 
@@ -35,6 +36,11 @@ standard strategy would be:
           onClick={() => {
             props.values.isSubmitting = true;
             props.values.submitAction = 'Modify';
+            //updating the state of the toolbar
+            //add false
+            //save true
+            //find false
+            //cancel true
             props.handleSubmit();
           }}
         >
@@ -56,15 +62,15 @@ standard strategy would be:
         <Button
           type="default"
           htmlType="button"
-          name="ok"
-          disabled={!props.values.isSubmitting}
+          name="Save"
+          
           onClick={() => {
-
-            props.values.submitAction = 'Save'
-            props.handleSubmit()
+            props.values.isSubmitting = true;
+            props.values.submitAction = 'Save';
+            props.handleSubmit();
           }}
         >
-          OK
+          Save
         </Button>
         <Button
           type="default"

@@ -2,7 +2,8 @@ import { Formik } from 'formik'
 import { DisplayFormikState } from '../components/helper'
 
 import AccountsTree from '../components/AccountsTree'
-
+//import toast object and toast container from react-nextjs-toast
+import { toast, ToastContainer } from 'react-nextjs-toast'
 import { useState, useEffect } from 'react'
 import { useMutation, useLazyQuery } from '@apollo/react-hooks'
 import { getRecCounts } from '../queries/accounts'
@@ -13,15 +14,34 @@ import { PageHeader, Input, Radio, Switch, Select } from 'antd'
 import {
   addGlCode,
   addSubGrpGlCode,
-  getSubGroupsByGroupCode,
+  addGrpGlCode,
+  deleteGrpGlCode,
+  updateGrpGlCode
 } from '../queries/accounts'
 import moment from 'moment'
 import { COADetails } from '../components/coa-details'
 import { useMaxNumber } from '../hooks/utils'
 
 const coa1 = () => {
-  const [level, setLevel] = useState(0)
-  const [addNewAccount, { data }] = useMutation(addGlCode)
+
+  const [level, setLevel] = useState(0);
+  const [deleteCoaLevel2, { loading: deleting, error: deleteError }] = useMutation(deleteGrpGlCode, {
+    onCompleted: successHandler
+  });
+  const [addNewAccountLevel2, { }] = useMutation(addGrpGlCode, {
+    onCompleted: successHandler
+  });
+  const [addNewAccountLevel3, { }] = useMutation(addSubGrpGlCode, {
+    onCompleted: successHandler
+  });
+  const [addNewAccountLevel4, { }] = useMutation(addGlCode, {
+    onCompleted: successHandler
+  });
+  const [updateNewAccountLevel2, {}] = useMutation(updateGrpGlCode, {
+    onCompleted: successHandler
+  });
+  
+  
   const { maxNumber, fetchMaxNumber } = useMaxNumber()
   const [values, setValues] = useState({
     mainGrpCode: '01',
@@ -44,31 +64,24 @@ const coa1 = () => {
 
     switch (level) {
       case 1:
-        updValues.glGroupCode = (maxNumber + 1).toString()
+        updValues.glGroupCode = '0'+(maxNumber + 1).toString()
         updValues.glGroupDesc = ''
         setValues(updValues)
         break
       case 2:
-        updValues.subGroupCode = (maxNumber + 1).toString()
+        updValues.subGroupCode = '0'+(maxNumber + 1).toString()
         updValues.subGroupDesc = ''
         setValues(updValues)
         break
       case 3:
-        updValues.glCode = (maxNumber + 1).toString()
+        updValues.glCode = '0'+(maxNumber + 1).toString()
         updValues.glHead = ''
         setValues(updValues)
         break
     }
   }, [maxNumber])
 
-  const flexSettings = {
-    flex: '1',
-    minW: '300px',
-    //textAlign: 'center',
-    color: 'black',
-    mx: '6',
-    mb: '6',
-  }
+  
   const { Option } = Select
   const onTreeSelect = (selection) => {
     const level = selection.length
@@ -96,12 +109,16 @@ const coa1 = () => {
   }
 
   return (
+   
     <SliderLayout>
       <PageHeader
         ghost={false}
         onBack={() => window.history.back()}
         title="Chart of Account"
-      ></PageHeader>
+      >
+
+      </PageHeader>
+       <ToastContainer align={"right"} position={"bottom"} />
       <div className="coaLayout">
         <div
           style={{
@@ -148,57 +165,121 @@ const coa1 = () => {
                   console.log('Action:' + values.submitAction)
                   //clearing all fields
                   //determining the level at which nodes needs to be added.
-
                   switch (level) {
                     case 0:
                       // add not allowed here.
-                      /*
-                      console.log('level 0 at the root level');
-                      */
                       break
                     case 1:
-                      console.log(
-                        'level 1 >>formdata.mainGrpCode:' +
-                          formdata.mainGrpCode,
-                      )
                       fetchMaxNumber(2, formdata.mainGrpCode)
                       break
                     case 2:
-                      console.log(
-                        'level 2 >>formdata.glGroupCode:' +
-                          formdata.glGroupCode,
-                      )
                       fetchMaxNumber(3, formdata.glGroupCode)
                       break
                     case 3:
-                      console.log(
-                        'level 3 >>formdata.subGroupCode:' +
-                          formdata.subGroupCode,
-                      )
                       fetchMaxNumber(4, formdata.subGroupCode)
                       break
                     case 4:
                       console.log('level 4 >> cannot be added further')
                       break
                   }
-                  /* addNewAccount({
-                    variables: {
-                      ep: {
-                        glcode: values.glGroupCode,
-                        glhead: values.glGroupDesc,
-                        subgrpglcode: '010102',
-                        enteredby: 'khanbx0a',
-                        enteredon: moment(new Date()).format('YYYY-MM-DD'),
-                      },
-                    },
-                  })*/
+
                 }
                 if (values.submitAction === 'Modify') {
+                  updateNewAccountLevel2({
+                    variables: {
+                      ep: {
+                        grpglhead: values.glGroupDesc,
+                      },
+                      ep2: {
+                        grpglcode: values.glGroupCode,
+                      },
+                    },
+                  }).catch((e) => {
+                    toast.notify(`Error has occurred while updating data. ${e}`,{
+                      duration: 5,
+                      type: "error"
+                    })
+                  });
                 }
                 if (values.submitAction === 'Delete') {
+                  //level 2 only
+                  deleteCoaLevel2({
+                    variables: {
+                      pk: values.glGroupCode,                
+                    },
+                  }).catch((e) => {
+                    toast.notify(`Error has occurred while deleting data. ${e}`,{
+                      duration: 5,
+                      type: "error"
+                    })
+                  })
                 }
+                if (values.submitAction === 'Save') {
+                  switch (level) {
+                    case 1:
+                      addNewAccountLevel2({
+                        variables: {
+                          ep: {
+                            grpglcode: values.glGroupCode,
+                            grpglhead: values.glGroupDesc,
+                            grpglcodel2: values.mainGrpCode,
+                            enteredby: 'khanbx0a',
+                            enteredon: moment(new Date()).format('YYYY-MM-DD'),
+                          },
+                        },
+                      }).catch((e) => {
+                        toast.notify(`Error has occured while inserting data. ${e}`,{
+                          duration: 5,
+                          type: "error"
+                        })
+                      })
+
+                      break
+                    case 2:
+                      //application needs to understand the the previous operation
+                      //as save button will work for update and add too.
+                      // parent level second -thrid level (new record)
+                      addNewAccountLevel3({
+                        variables: {
+                          ep: {
+                            subgrpglcode: values.subGroupCode,
+                            subgrpglhead: values.subGroupDesc,
+                            grpglcode: values.glGroupCode,
+                            enteredby: 'khanbx0a',
+                            enteredon: moment(new Date()).format('YYYY-MM-DD'),
+                          },
+                        },
+                      }).catch((e) => {
+                        toast.notify(`Error has occured while inserting data. ${e}`, {
+                          duration: 5,
+                          type: "error"
+                        });
+                      })
+
+                      break
+                    case 3:
+                      addNewAccountLevel4({
+                        variables: {
+                          ep: {
+                            glcode: values.glCode,
+                            glhead: values.glHead,
+                            subgrpglcode: values.subGroupCode,
+                            enteredby: 'khanbx0a',
+                            enteredon: moment(new Date()).format('YYYY-MM-DD'),
+                          },
+                        },
+                      }).catch((e) => {
+                        toast.notify(`Error has occured while inserting data. ${e}`,{
+                          duration: 5,
+                          type: "error"
+                        });
+                      })
+                  }
+                }
+                  
                 setValues(formdata)
                 setSubmitting(false)
+
               }, 400)
             }}
           >
@@ -304,35 +385,22 @@ const coa1 = () => {
                 <CRUDToolBar {...props} />
 
                 <DisplayFormikState {...props} />
-                {countState.data
-                  ? console.log('counts', transformCounts(countState.data))
-                  : 'No Counts yet'}
-                <button onClick={() => recCounts()}>Get RecCounts</button>
+                
               </form>
             )}
           </Formik>
-          <h2>
-            {maxNumber}...{level}
-          </h2>
-          <button onClick={() => fetchMaxNumber(1)}>Get Max Level1</button>
-          <br />
-          <button onClick={() => fetchMaxNumber(2, '03')}>
-            Get Max Level2 (03)
-          </button>
-          <br />
-          <button onClick={() => fetchMaxNumber(3, '0332')}>
-            Get Max Level3 (0332)
-          </button>
-          <br />
-          <button onClick={() => fetchMaxNumber(4, '033111')}>
-            Get Max Level4 (033111)
-          </button>
+          
         </div>
       </div>
     </SliderLayout>
   )
 }
-
+const successHandler = () => {
+  toast.notify(`Operation performed successfully.`,{
+    duration: 5,
+    type: "success"
+  })
+};
 const transformCounts = (data) => {
   return {
     level1: data.level1.count.count,
