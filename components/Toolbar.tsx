@@ -2,26 +2,62 @@ import Link from 'next/link'
 import { Button, Tooltip } from 'antd'
 // import Autocomplete from './Autocomplete'
 
-import { SearchOutlined} from '@ant-design/icons'
+import { SearchOutlined } from '@ant-design/icons'
+import { crudMachine } from './CoaState'
+import { useMachine } from '@xstate/react'
 
 const linkStyle = {
   marginRight: 15,
 }
 
-export function CRUDToolBar() {
-  return (
-    <div>
-      <Button type="primary">Add</Button>
-      <Button type="primary">Modify</Button>
-      <Button type="primary">Delete</Button>
-    </div>
-  )
+const isEditing = (value) => {
+  return value === 'add' || value === 'edit' || value === 'remove'
 }
-export function BasicToolBar() {
+
+interface ToolbarProps {
+  send(text: string): void
+  state: any
+}
+
+export function CRUDToolBar(props: ToolbarProps) {
+  const { state, send } = props
   return (
     <div>
-      <Button type="primary">OK</Button>
-      <Button type="primary">Cancel</Button>
+      <Button
+        type="primary"
+        onClick={() => send('ADD')}
+        disabled={state.value !== 'view'}
+      >
+        Add
+      </Button>
+      <Button
+        type="primary"
+        onClick={() => send('EDIT')}
+        disabled={state.value !== 'view'}
+      >
+        Modify
+      </Button>
+      <Button
+        type="primary"
+        onClick={() => send('DELETE')}
+        disabled={state.value !== 'view'}
+      >
+        Delete
+      </Button>
+      <Button
+        type="primary"
+        onClick={() => send('SAVE')}
+        disabled={!isEditing(state.value)}
+      >
+        OK
+      </Button>
+      <Button
+        type="primary"
+        onClick={() => send('CANCEL')}
+        disabled={!isEditing(state.value)}
+      >
+        Cancel
+      </Button>
     </div>
   )
 }

@@ -8,10 +8,13 @@ import { PropertyKeys } from 'ag-grid-community'
 import { useState } from 'react'
 
 import SliderLayout from '../components/SliderPageLayout'
-import { SearchToolBar, CRUDToolBar, BasicToolBar } from '../components/Toolbar'
+import { SearchToolBar, CRUDToolBar } from '../components/Toolbar'
 import { PageHeader } from 'antd'
+import { crudMachine } from '../components/CoaState'
+import { useMachine } from '@xstate/react'
 
 const coa1 = () => {
+  const [state, send] = useMachine(crudMachine)
   const [values, setValues] = useState({
     mainGrpCode: '01',
     mainGroupDesc: 'Property and Assets',
@@ -62,6 +65,7 @@ const coa1 = () => {
         onBack={() => window.history.back()}
         title="Chart of Account"
       ></PageHeader>
+      [{state.value}]
       <div>
         <Flex>
           {/* <Box {...flexSettings} > */}
@@ -73,7 +77,7 @@ const coa1 = () => {
               minWidth: '300px',
             }}
           >
-            <AccountsTree onTreeSelect={onTreeSelect} />
+            <AccountsTree onTreeSelect={onTreeSelect} send={send} />
           </div>
           {/* </Box> */}
 
@@ -235,8 +239,7 @@ const coa1 = () => {
                       w="100%"
                       templateColumns="repeat(2, minmax(300px, 1fr))"
                     >
-                      <CRUDToolBar />
-                      <BasicToolBar />
+                      <CRUDToolBar state={state} send={send} />
                     </Grid>
                   </Box>
                   {/*<DisplayFormikState {...props} />*/}

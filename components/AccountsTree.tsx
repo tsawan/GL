@@ -2,6 +2,8 @@ import gql from 'graphql-tag'
 import { useState } from 'react'
 import { Tree, Input } from 'antd'
 import { useQuery } from '@apollo/react-hooks'
+import { crudMachine } from './CoaState'
+import { useMachine } from '@xstate/react'
 
 const { Search } = Input
 
@@ -59,13 +61,20 @@ const getParent = (key, tree) => {
   return parent
 }
 
-const AccountsTree = ({ onTreeSelect }) => {
+interface AccountTreeProps {
+  send(text: string): void
+  onTreeSelect(selection: any): void
+}
+
+const AccountsTree = (props: AccountTreeProps) => {
   const [treeData, setTreeData] = useState([])
   const [init, setInit] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const [expandedKeys, setExpandedKeys] = useState([])
   const [autoExpandParent, setAutoExpandParent] = useState(false)
   const [dataList, setDataList] = useState([])
+
+  const { onTreeSelect, send } = props
 
   const _list = []
   const generateList = (data) => {
@@ -102,6 +111,8 @@ const AccountsTree = ({ onTreeSelect }) => {
       }
       current = _parent
     }
+    if (level >= 1) send('SELECT')
+
     if (level === MAX_LEVEL) {
       let account = result[0]
       // fetch account details

@@ -1,9 +1,8 @@
 // can refactor later to /states folder
 
-import { useMachine } from '@xstate/react'
 import { Machine } from 'xstate'
 
-const crudMachine = Machine({
+export const crudMachine = Machine({
   id: 'crud',
   initial: 'idle',
   states: {
@@ -40,5 +39,3 @@ const crudMachine = Machine({
     },
   },
 })
-
-export const [state, send] = useMachine(crudMachine)
