@@ -8,78 +8,67 @@ const linkStyle = {
   marginRight: 15,
 }
 
-export const CRUDToolBar = (props) => {
-  /*
-standard strategy would be: 
-  For edit/Modify selecting the required row and click on Modify button in the toolbar. Similarly, user can add a new record to grid either by 
-  clicking on Add button in the toolbar, Save and Cancel while in edit mode is possible using respective toolbar button.
-  Deletion of the record is possible by selecting the required row and click on Delete button in the toolbar.
-*/
+interface ToolbarProps {
+  send(text: string): void
+  state: any
+  resetForm(): void
+  handleSubmit(): void
+}
+
+export function CRUDToolBar(props: ToolbarProps) {
+  const { state, send, resetForm, handleSubmit } = props
   return (
     <div>
-      <div>
-        <Button
-          type="default"
-          name="add"
-          onClick={() => {
-            props.values.isSubmitting = true;
-            props.values.submitAction = 'Add';
-            props.handleSubmit();
-          }}
-        >
-          Add
-        </Button>
-        <Button
-          type="default"
-          name="modify"
-          onClick={() => {
-            props.values.isSubmitting = true;
-            props.values.submitAction = 'Modify';
-            props.handleSubmit();
-          }}
-        >
-          Modify
-        </Button>
-        <Button
-          type="default"
-          name="delete"
-          onClick={() => {
-            props.values.isSubmitting = true;
-            props.values.submitAction = 'Delete';
-            props.handleSubmit();
-          }}
-        >
-          Delete
-        </Button>
-      </div>
-      <div>
-        <Button
-          type="default"
-          htmlType="button"
-          name="ok"
-          disabled={!props.values.isSubmitting}
-          onClick={() => {
-
-            props.values.submitAction = 'Save'
-            props.handleSubmit()
-          }}
-        >
-          OK
-        </Button>
-        <Button
-          type="default"
-          htmlType="reset"
-          name="reset"
-          disabled={!props.values.isSubmitting}
-          onClick={() => {
-
-            props.values.submitAction = 'Cancel'
-            props.resetForm();
-          }}
-        >
-          Cancel
-        </Button>
-      </div>
+      <Button
+        type="primary"
+        onClick={() => {
+          send('ADD')
+          handleSubmit()
+        }}
+        disabled={state.value !== 'view'}
+      >
+        Add
+      </Button>
+      <Button
+        type="primary"
+        onClick={() => {
+          send('EDIT')
+          handleSubmit()
+        }}
+        disabled={state.value !== 'view'}
+      >
+        Modify
+      </Button>
+      <Button
+        type="primary"
+        onClick={() => {
+          send('DELETE')
+          handleSubmit()
+        }}
+        disabled={state.value !== 'view'}
+      >
+        Delete
+      </Button>
+      <Button
+        type="primary"
+        onClick={() => {
+          send('OK')
+          handleSubmit()
+        }}
+        disabled={state.value !== 'edit'}
+      >
+        OK
+      </Button>
+      <Button
+        type="primary"
+        onClick={() => {
+          send('CANCEL')
+          resetForm()
+        }}
+        disabled={state.value !== 'edit'}
+      >
+        Cancel
+      </Button>
     </div>
   )
 }

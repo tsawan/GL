@@ -8,7 +8,6 @@ import { useMutation, useLazyQuery } from '@apollo/react-hooks'
 import { getRecCounts } from '../queries/accounts'
 
 import SliderLayout from '../components/SliderPageLayout'
-import { CRUDToolBar } from '../components/Toolbar'
 import { PageHeader, Input, Radio, Switch, Select } from 'antd'
 import {
   addGlCode,
@@ -19,7 +18,12 @@ import moment from 'moment'
 import { COADetails } from '../components/coa-details'
 import { useMaxNumber } from '../hooks/utils'
 
+import { CRUDToolBar } from '../components/Toolbar'
+import { toolbarMachine } from '../components/CoaState'
+import { useMachine } from '@xstate/react'
+
 const coa1 = () => {
+  const [state, send] = useMachine(toolbarMachine)
   const [level, setLevel] = useState(0)
   const [addNewAccount, { data }] = useMutation(addGlCode)
   const { maxNumber, fetchMaxNumber } = useMaxNumber()
@@ -111,7 +115,7 @@ const coa1 = () => {
             minWidth: '300px',
           }}
         >
-          <AccountsTree onTreeSelect={onTreeSelect} />
+          <AccountsTree onTreeSelect={onTreeSelect} send={send} />
         </div>
 
         <div>
@@ -301,7 +305,12 @@ const coa1 = () => {
                   </Radio.Group>
                 </div>
                 <COADetails {...props} />
-                <CRUDToolBar {...props} />
+                <CRUDToolBar
+                  state={state}
+                  send={send}
+                  handleSubmit={props.handleSubmit}
+                  resetForm={props.resetForm}
+                />
 
                 <DisplayFormikState {...props} />
                 {countState.data
