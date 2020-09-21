@@ -10,11 +10,11 @@ import { useState } from 'react'
 import SliderLayout from '../components/SliderPageLayout'
 import { SearchToolBar, CRUDToolBar } from '../components/Toolbar'
 import { PageHeader } from 'antd'
-import { crudMachine } from '../components/CoaState'
+import { toolbarMachine } from '../components/CoaState'
 import { useMachine } from '@xstate/react'
 
 const coa1 = () => {
-  const [state, send] = useMachine(crudMachine)
+  const [state, send] = useMachine(toolbarMachine)
   const [values, setValues] = useState({
     mainGrpCode: '01',
     mainGroupDesc: 'Property and Assets',
@@ -65,7 +65,7 @@ const coa1 = () => {
         onBack={() => window.history.back()}
         title="Chart of Account"
       ></PageHeader>
-      [{state.value}]
+      [{state.value}, {state.context.editType}]
       <div>
         <Flex>
           {/* <Box {...flexSettings} > */}

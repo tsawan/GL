@@ -2,40 +2,46 @@
 
 import { Machine } from 'xstate'
 
-export const crudMachine = Machine({
-  id: 'crud',
-  initial: 'idle',
-  states: {
-    idle: {
-      on: {
-        ADD: 'add',
-        SELECT: 'view',
-      },
+const editing = {
+  target: 'edit',
+  actions: 'setEditType',
+}
+const viewing = {
+  target: 'view',
+  actions: 'clearEditType',
+}
+export const toolbarMachine = Machine(
+  {
+    id: 'toolbar',
+    initial: 'idle',
+    context: {
+      editType: '',
     },
-    view: {
-      on: {
-        ADD: 'add',
-        EDIT: 'edit',
-        DELETE: 'remove',
+    states: {
+      idle: {
+        on: {
+          SELECT: 'view',
+        },
       },
-    },
-    add: {
-      on: {
-        SAVE: 'idle',
-        CANCEL: 'idle',
+      view: {
+        on: {
+          ADD: { ...editing },
+          EDIT: { ...editing },
+          DELETE: { ...editing },
+        },
       },
-    },
-    edit: {
-      on: {
-        SAVE: 'view',
-        CANCEL: 'view',
-      },
-    },
-    remove: {
-      on: {
-        SAVE: 'idle',
-        CANCEL: 'view',
+      edit: {
+        on: {
+          OK: { ...viewing },
+          CANCEL: { ...viewing },
+        },
       },
     },
   },
-})
+  {
+    actions: {
+      setEditType: (ctx, evt) => (ctx.editType = evt.type),
+      clearEditType: (ctx) => (ctx.editType = ''),
+    },
+  },
+)

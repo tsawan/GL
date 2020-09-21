@@ -2,8 +2,6 @@ import gql from 'graphql-tag'
 import { useState } from 'react'
 import { Tree, Input } from 'antd'
 import { useQuery } from '@apollo/react-hooks'
-import { crudMachine } from './CoaState'
-import { useMachine } from '@xstate/react'
 
 const { Search } = Input
 

@@ -3,15 +3,9 @@ import { Button, Tooltip } from 'antd'
 // import Autocomplete from './Autocomplete'
 
 import { SearchOutlined } from '@ant-design/icons'
-import { crudMachine } from './CoaState'
-import { useMachine } from '@xstate/react'
 
 const linkStyle = {
   marginRight: 15,
-}
-
-const isEditing = (value) => {
-  return value === 'add' || value === 'edit' || value === 'remove'
 }
 
 interface ToolbarProps {
@@ -46,15 +40,15 @@ export function CRUDToolBar(props: ToolbarProps) {
       </Button>
       <Button
         type="primary"
-        onClick={() => send('SAVE')}
-        disabled={!isEditing(state.value)}
+        onClick={() => send('OK')}
+        disabled={state.value !== 'edit'}
       >
         OK
       </Button>
       <Button
         type="primary"
         onClick={() => send('CANCEL')}
-        disabled={!isEditing(state.value)}
+        disabled={state.value !== 'edit'}
       >
         Cancel
       </Button>
